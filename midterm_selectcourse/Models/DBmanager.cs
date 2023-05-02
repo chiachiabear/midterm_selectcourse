@@ -11,8 +11,9 @@ namespace midterm_selectcourse.Models
 
         public void LoginVerify(string account_number, string secret_code)
         {
+           
             SqlConnection sqlConnection = new SqlConnection(ConnStr);
-            SqlCommand sqlCommand = new SqlCommand(@"SELECT * FROM card WHERE account_number=@account_number AND secret_code=@secret_code");
+            SqlCommand sqlCommand = new SqlCommand(@"SELECT * FROM account WHERE account_number=@account_number AND secret_code=@secret_code");
             sqlCommand.Connection = sqlConnection;
             sqlCommand.Parameters.Add(new SqlParameter("@account_number", account_number));
             sqlCommand.Parameters.Add(new SqlParameter("@secret_code", secret_code));
