@@ -1,7 +1,39 @@
-﻿
+﻿@using midterm_selectcourse.Models;
 @{
-    ViewBag.Title = "ShowName";
+    List<Student> students = ViewBag.students;
 }
+<table class="table">
+    <thead>
+        <tr>
+            <th>學生id</th>
+            <th>系院</th>
+            <th>學號</th>
+            <th>年級</th>
+            <th>班級</th>
+            <th>學生姓名</th>
+            <th>年級</th>
+            <th>總學分</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
 
+        @foreach (Student student in students)
+        {
+        <tr>
+            <th>@student.Student_id</th>
+            <th>@student.Department_name</th>
+            <th>@student.Account_number</th>
+            <th>@student.Grade</th>
+            <th>@student.Class_name</th>
+            <th>@student.Student_name</th>
+            <th>@student.Student_grade</th>
+            <th>@student.Total_credits</th>
+        </tr>
+    }
+
+    </tbody>
+</table>
 <h2>ShowName</h2>
+
 

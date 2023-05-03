@@ -20,12 +20,26 @@ namespace midterm_selectcourse.Controllers
         public ActionResult Login(string account_number, string secret_code)
         {
             DBmanager dBmanager = new DBmanager();
-            dBmanager.LoginVerify(account_number, secret_code);
-            return RedirectToAction("ShowName");
+            int check_account=dBmanager.LoginVerify(account_number, secret_code);
+            if(check_account==1)
+            {
+                Session["account"] = account_number;
+                return RedirectToAction("ShowName", new { param1 = Session["account"]}) ;
+            }
+            else
+            {
+                return View();
+            }
+            
+
         }
 
-        public ActionResult ShowName()
+        public ActionResult ShowName(string param1)
         {
+
+            DBmanager dBmanager = new DBmanager();
+            List<Student> students = dBmanager.GetStudents(param1);
+            ViewBag.students = students;
             return View();
         }
 

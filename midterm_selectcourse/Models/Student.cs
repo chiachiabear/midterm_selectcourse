@@ -13,8 +13,9 @@ namespace midterm_selectcourse.Models
         public int Grade { get; set; }
         public string Class_name { get; set; }
         public string Student_name { get; set; }
-        public int Total_credits { get; set; }
 
         public int Student_grade { get; set; }
+        public int Total_credits { get; set; }
+
     }
 }
