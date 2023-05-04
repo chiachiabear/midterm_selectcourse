@@ -1,0 +1,123 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*
+https://www.figma.com/file/NMGGLK9ui5xcCdA9HwPVNN/Untitled?node-id=0-1&t=pVSASH7HLKGYX128-0
+*/
+body {
+	
+	/* 灰色背景*/
+    width: 1392px;
+    height: 1088px;
+    left: 229px;
+    top: 0px;
+    background-color: #B4B0C6;
+	
+    /* 左邊框
+    position: absolute;
+    width: 229px;
+    height: 1088px;
+    left: 0px;
+    top: 0px;
+    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);*/ 
+    
+	/* 右邊框
+    position: absolute;
+    width: 229px;
+    height: 1091px;
+    left: 1621px;
+    top: 0px;
+    background-position: 0% 0%;
+    backdrop-filter: blur(2px);*/ 
+    
+	
+   
+	/*文字基本設定*/
+    -webkit-box-shadow: 0px 0px;
+    box-shadow: 0px 0px;
+    width: 1166px;
+    height: 703px;
+    left: 342px;
+    top: 214px;
+    text-align: center;	
+	 
+}
+
+.image-container {
+    z-index:4;
+    position:relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+body h2 {
+    font-family: "微軟正黑體";
+}
+
+body h2 preselection {
+        color: #FFFFFF;
+    }
+
+body form {
+    z-index: 5;
+    position: absolute;
+    top: 200px;
+    right: 200px;
+    width: 200px;
+    height: 150px;
+    padding: 50px;
+    background-color: white;
+    border-radius:20%;
+    font-family: "微軟正黑體";
+}
+
+
+
+body h3 {
+    text-align: left;
+	font-family: "微軟正黑體";
+}
+body h3 search {
+    color: #FFFFFF;
+    text-align: center;
+}
+body h3 calendar {
+    color: #FFFFFF;
+    text-align: center;
+}
+body h3 additional {
+    color: #FFFFFF;
+    text-align: center;
+}
+body h3 interschool {
+    color: #FFFFFF;
+    text-align: center;
+}
+body h1 {
+	font-family: "微軟正黑體";
+}
+body h1 system {
+	color: #FFFFFF;	
+}
+body h5 {
+	font-family: "微軟正黑體";
+}
+body h5 forget {
+	color: #FFFFFF;	
+}
+body h5 add {
+	color: #FFFFFF;	
+}
+body h4 {
+	font-family: "微軟正黑體";
+}
+body h4 login {
+	color: #FFFFFF;	
+}
