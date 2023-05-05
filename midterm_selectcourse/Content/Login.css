@@ -5,51 +5,67 @@
 https://www.figma.com/file/NMGGLK9ui5xcCdA9HwPVNN/Untitled?node-id=0-1&t=pVSASH7HLKGYX128-0
 */
 body {
-	
-	/* 灰色背景*/
+    /* 灰色背景*/
     width: 1392px;
     height: 1088px;
     left: 229px;
     top: 0px;
-    background-color: #B4B0C6;
-	
+    background-image: linear-gradient(to right, #B4B0C6, #19426C);
     /* 左邊框
     position: absolute;
     width: 229px;
     height: 1088px;
     left: 0px;
     top: 0px;
-    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);*/ 
-    
-	/* 右邊框
+    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);*/
+    /* 右邊框
     position: absolute;
     width: 229px;
     height: 1091px;
     left: 1621px;
     top: 0px;
     background-position: 0% 0%;
-    backdrop-filter: blur(2px);*/ 
-    
-	
-   
-	/*文字基本設定*/
+    backdrop-filter: blur(2px);*/
+    /*文字基本設定*/
     -webkit-box-shadow: 0px 0px;
     box-shadow: 0px 0px;
     width: 1166px;
     height: 703px;
     left: 342px;
     top: 214px;
-    text-align: center;	
-	 
+    text-align: center;
 }
 
+
 .image-container {
-    z-index:4;
-    position:relative;
+    z-index: 3;
+    /*
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
+    position: absolute;
+    width: 1166px;
+    height: 703px;
+    left: 342px;
+    top: 214px;
     height: 100vh;
+        
+*/
+    position: absolute;
+    width: 1166px;
+    height: 703px;
+    left: 342px;
+    top: 214px;
+}
+.inage_fish {
+    position: absolute;
+    width: 1166px;
+    height: 703px;
+    left: 342px;
+    top: 214px;
+    border: 10px solid #EBF8FF;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 }
 
 img {
@@ -79,6 +95,13 @@ body form {
 }
 
 
+.fishbackground {
+    position: absolute;
+    width: 1166px;
+    height: 703px;
+    left: 342px;
+    top: 214px;
+}
 
 body h3 {
     text-align: left;

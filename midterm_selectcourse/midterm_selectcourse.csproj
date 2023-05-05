@@ -142,6 +142,7 @@
     <Compile Include="Models\Teaches.cs" />
     <Compile Include="Models\Work_in.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\CurrentCurriculum.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />

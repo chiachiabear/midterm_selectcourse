@@ -62,16 +62,82 @@ namespace midterm_selectcourse.Models
             if (reader.HasRows)
             {
                 System.Diagnostics.Debug.WriteLine("有找到帳號");
+                sqlConnection.Close();
                 return 1;
             }
             else
             {
                 System.Diagnostics.Debug.WriteLine("沒找到");
+                sqlConnection.Close();
                 return 0;
             }
-            sqlConnection.Close();
+            
         }
 
+        public List<Learns> GetLearn_Nows(string s)
+        {
+            List<Learns> learns = new List<Learns>();  // 創建一個 Card 對象列表。
+            SqlConnection sqlConnection = new SqlConnection(ConnStr); // 創建一個 SqlConnection 對象，使用 ConnStr 字符串指定的連接字符串進行初始化。
+            SqlCommand sqlCommand = new SqlCommand(@"SELECT * FROM learn WHERE student_ID=@s");// 創建一個 SqlCommand 對象，它表示要在數據庫中執行的命令，本例中是選擇所有 card 表中的數據
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.Parameters.Add(new SqlParameter("@s", s));
+            sqlConnection.Open();// 打開 SqlConnection 對象。
+
+            SqlDataReader reader = sqlCommand.ExecuteReader(); // 創建一個 SqlDataReader 對象，它可以讀取從數據庫返回的行。
+            if (reader.HasRows)
+            {
+                while (reader.Read())// 循環讀取 SqlDataReader 對象中的每一行，並為每個行創建一個 Card 對象。
+                {
+                    Learns learn = new Learns
+                    {
+                        Student_id = reader.GetString(reader.GetOrdinal("student_ID")),
+                        Course_id = reader.GetInt32(reader.GetOrdinal("course_ID")),
+                        Semester = reader.GetInt32(reader.GetOrdinal("semester")),
+                        Condition = reader.GetString(reader.GetOrdinal("condition"))
+                    };
+                    learns.Add(learn);
+                }
+            }
+            else
+            {
+                Console.WriteLine("資料庫為空！");
+            }
+            sqlConnection.Close();
+            return learns;
+        }
+
+        public List<Course> GetCourse(List<Learns> learns)
+        {
+            List<Learns> courses = new List<Course>();  // 創建一個 Card 對象列表。
+            SqlConnection sqlConnection = new SqlConnection(ConnStr); // 創建一個 SqlConnection 對象，使用 ConnStr 字符串指定的連接字符串進行初始化。
+            foreach (cID in learns)
+                List<SqlCommand> sqlCommand = new List<SqlCommand>(@"SELECT * FROM course WHERE course_ID=@s");// 創建一個 SqlCommand 對象，它表示要在數據庫中執行的命令，本例中是選擇所有 card 表中的數據
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.Parameters.Add(new SqlParameter("@s", s));
+            sqlConnection.Open();// 打開 SqlConnection 對象。
+
+            SqlDataReader reader = sqlCommand.ExecuteReader(); // 創建一個 SqlDataReader 對象，它可以讀取從數據庫返回的行。
+            if (reader.HasRows)
+            {
+                while (reader.Read())// 循環讀取 SqlDataReader 對象中的每一行，並為每個行創建一個 Card 對象。
+                {
+                    Learns learn = new Learns
+                    {
+                        Student_id = reader.GetString(reader.GetOrdinal("student_ID")),
+                        Course_id = reader.GetInt32(reader.GetOrdinal("course_ID")),
+                        Semester = reader.GetInt32(reader.GetOrdinal("semester")),
+                        Condition = reader.GetString(reader.GetOrdinal("condition"))
+                    };
+                    learns.Add(learn);
+                }
+            }
+            else
+            {
+                Console.WriteLine("資料庫為空！");
+            }
+            sqlConnection.Close();
+            return learns;
+        }
 
     }
 }

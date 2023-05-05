@@ -34,14 +34,20 @@ namespace midterm_selectcourse.Controllers
 
         }
 
-        public ActionResult ShowName(string param1)
+        public ActionResult ShowName(string param1)  //試試看多形
         {
 
             DBmanager dBmanager = new DBmanager();
             List<Student> students = dBmanager.GetStudents(param1);
+            List<Learns> learn_nows = dBmanager.GetLearn_Nows(param1);
+            Array CIDs = new Array[sizeof(learns_now)];
+            List<Course> courses = dBmanager.GetCourse(learn_nows);
+            List<var> varResult = 
             ViewBag.students = students;
+            ViewBag.learn_nows = learn_nows;
             return View();
         }
+
 
 
     }

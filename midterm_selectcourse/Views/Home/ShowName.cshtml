@@ -1,6 +1,7 @@
 ﻿@using midterm_selectcourse.Models;
 @{
     List<Student> students = ViewBag.students;
+    List<Learns> learns = ViewBag.learn_nows;
 }
 <table class="table">
     <thead>
@@ -31,6 +32,34 @@
             <th>@student.Total_credits</th>
         </tr>
     }
+
+    </tbody>
+</table>
+
+<h1></h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>選課代號</th>  course
+            <th>開課班級</th>  set_up
+            <th>科目名稱</th>  course
+            <th>教師</th>      teaches
+            <th>學分</th>      course
+            <th>上課時間</th>  occured_in -> 用sectionID找section
+            <th>實收/開放</th> 
+            <th>修別</th>      course
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (Learns learn in learns)
+        {
+            <tr>
+                <th>@learn.Course_id</th>
+                <th>@learn.Semester</th>
+                <th>@learn.Condition</th>
+            </tr>
+        }
 
     </tbody>
 </table>
