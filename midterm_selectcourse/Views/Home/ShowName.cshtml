@@ -1,7 +1,8 @@
-﻿@using midterm_selectcourse.Models;
+﻿@using midterm_selectcourse.ViewModels;
+@using midterm_selectcourse.Models;
 @{
     List<Student> students = ViewBag.students;
-    List<Learns> learns = ViewBag.learn_nows;
+    List<CurrentCurriculum> CCs = ViewBag.CC;
 }
 <table class="table">
     <thead>
@@ -21,17 +22,17 @@
 
         @foreach (Student student in students)
         {
-        <tr>
-            <th>@student.Student_id</th>
-            <th>@student.Department_name</th>
-            <th>@student.Account_number</th>
-            <th>@student.Grade</th>
-            <th>@student.Class_name</th>
-            <th>@student.Student_name</th>
-            <th>@student.Student_grade</th>
-            <th>@student.Total_credits</th>
-        </tr>
-    }
+            <tr>
+                <th>@student.Student_id</th>
+                <th>@student.Department_name</th>
+                <th>@student.Account_number</th>
+                <th>@student.Grade</th>
+                <th>@student.Class_name</th>
+                <th>@student.Student_name</th>
+                <th>@student.Student_grade</th>
+                <th>@student.Total_credits</th>
+            </tr>
+        }
 
     </tbody>
 </table>
@@ -40,24 +41,30 @@
 <table class="table">
     <thead>
         <tr>
-            <th>選課代號</th>  course
-            <th>開課班級</th>  set_up
-            <th>科目名稱</th>  course
-            <th>教師</th>      teaches
-            <th>學分</th>      course
-            <th>上課時間</th>  occured_in -> 用sectionID找section
-            <th>實收/開放</th> 
-            <th>修別</th>      course
+            <th>選課代號</th>
+            <th>開課班級</th>
+            <th>科目名稱</th> 
+            <th>教師</th>
+            <th>學分</th>
+            <th>上課地點/時間</th> 
+            <th>實收/開放</th>
+            <th>修別</th> 
         </tr>
     </thead>
     <tbody>
 
-        @foreach (Learns learn in learns)
+        @foreach (CurrentCurriculum CC in CCs)
         {
             <tr>
-                <th>@learn.Course_id</th>
-                <th>@learn.Semester</th>
-                <th>@learn.Condition</th>
+                <th>@CC.Course.Course_id</th>
+                <th>@CC.Set_up.Department_name @CC.Set_up.Grade @CC.Set_up.Class_name</th>
+                <th>@CC.Course.Course_name</th>
+                <th>@CC.Teacher_name</th>
+                <th>@CC.Course.Credits</th>
+                <th>@CC.Classroom.Building @CC.Classroom.Room_id  </th>
+                <th typeof="">@CC.Section.Weekday @CC.Section.Start_time @CC.Section.End_time</th>
+                <th>??/@CC.Classroom.Capacity</th>
+                <th>@CC.Course.Sort</th>
             </tr>
         }
 
