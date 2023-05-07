@@ -149,39 +149,39 @@ namespace midterm_selectcourse.Models
             {
                 Console.WriteLine("資料庫為空！");
             }
+            sqlConnection.Close();
 
-            //更改sqlCommand後再次開啟 sqlConnection
-            sqlCommand.CommandText = @"SELECT COUNT(L2.student_ID) AS count
-                                          FROM 
-                                          (
-                                                (student
-                                                INNER JOIN learn L1
-                                                ON student.student_ID = L1.student_ID)
-                                          INNER JOIN learn L2
-                                          ON L2.course_ID = L1.course_ID)
-                                          WHERE student.student_ID = @student_id
-                                      ";
-            reader.Close();
-            SqlDataReader reader2 = sqlCommand.ExecuteReader();
-            //sqlCommand.Connection = sqlConnection;
-            //sqlCommand.Parameters.Add(new SqlParameter("@student_id", student_id));
+            //新增一組Command跟Connection
+            SqlConnection sqlConnection2 = new SqlConnection(ConnStr);
+            SqlCommand sqlCommand2= new SqlCommand(@"SELECT COUNT(student.student_ID)　as count
+                                                    FROM student
+                                                    INNER JOIN learn
+                                                    ON student.student_ID = learn.student_ID
+                                                    WHERE student.student_ID = @student_id
+                                                    GROUP BY learn.course_ID 
+                                                  ");
+            sqlCommand2.Connection = sqlConnection2;
+            sqlCommand2.Parameters.Add(new SqlParameter("@student_id", student_id));
+            sqlConnection2.Open();
             
+            SqlDataReader reader2 = sqlCommand2.ExecuteReader();
             List<int> counts = new List<int>();
             if (reader2.HasRows)
             {
-                
                 while(reader2.Read())
                 {
                     int temp = new int();
-                    temp = reader.GetInt32(reader.GetOrdinal("student_amount"));
+                    temp = reader2.GetInt32(reader2.GetOrdinal("count"));
+                    
                     counts.Add(temp);
                 }
             }
-            sqlConnection.Close();
-            for(int i=0; i<counts.Count; i++)
+            sqlConnection2.Close();
+            for (int i = 0; i < CCs.Count; i++)
             {
                 CCs[i].Student_amount = counts[i];
             }
+
             return CCs;
         }
 
