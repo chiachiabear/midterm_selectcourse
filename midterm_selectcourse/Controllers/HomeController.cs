@@ -56,12 +56,13 @@ namespace midterm_selectcourse.Controllers
             //仍然讓他去搜尋，舉例來說 在GetCourseByTeacher內的param應是老師名稱，假如現在param1是課程名稱，會找不到，因為沒有老師會叫程式設計(III)而回傳的就會是空的
             //就可以透過兩個function哪個回傳不是空的，來判斷今天使用者是用甚麼找
             //假如皆為空，就跟使用者說查無資料
-
-            
-
+            System.Diagnostics.Debug.WriteLine(param1, "   ", param2);
             return View();
         }
 
-
+        public ActionResult Logout()
+        {
+            return RedirectToAction("Login");
+        }
     }
 }

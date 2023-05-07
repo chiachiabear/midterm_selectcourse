@@ -153,12 +153,15 @@ namespace midterm_selectcourse.Models
 
             //新增一組Command跟Connection
             SqlConnection sqlConnection2 = new SqlConnection(ConnStr);
-            SqlCommand sqlCommand2= new SqlCommand(@"SELECT COUNT(student.student_ID)　as count
-                                                    FROM student
-                                                    INNER JOIN learn
-                                                    ON student.student_ID = learn.student_ID
+            SqlCommand sqlCommand2= new SqlCommand(@"SELECT COUNT(student.student_ID)　as count　,L2.course_ID
+                                                    FROM 
+														(student
+														INNER JOIN learn L1
+														ON student.student_ID = L1.student_ID)
+													RIGHT JOIN learn L2
+													ON L1.course_ID = L2.course_ID
                                                     WHERE student.student_ID = @student_id
-                                                    GROUP BY learn.course_ID 
+                                                    GROUP BY L2.course_ID
                                                   ");
             sqlCommand2.Connection = sqlConnection2;
             sqlCommand2.Parameters.Add(new SqlParameter("@student_id", student_id));
@@ -166,20 +169,30 @@ namespace midterm_selectcourse.Models
             
             SqlDataReader reader2 = sqlCommand2.ExecuteReader();
             List<int> counts = new List<int>();
+            List<int> course_IDs = new List<int>();
             if (reader2.HasRows)
             {
                 while(reader2.Read())
                 {
-                    int temp = new int();
-                    temp = reader2.GetInt32(reader2.GetOrdinal("count"));
-                    
-                    counts.Add(temp);
+                    int count = new int();
+                    int cID = new int();
+                    count = reader2.GetInt32(reader2.GetOrdinal("count"));
+                    cID = reader2.GetInt32(reader2.GetOrdinal("course_ID"));
+              
+                    counts.Add(count);
+                    course_IDs.Add(cID);
                 }
             }
             sqlConnection2.Close();
             for (int i = 0; i < CCs.Count; i++)
             {
-                CCs[i].Student_amount = counts[i];
+                for(int j=0; j<course_IDs.Count; j++)
+                {
+                    if(CCs[i].Course.Course_id == course_IDs[j])
+                    {
+                        CCs[i].Student_amount = counts[j];
+                    }
+                }
             }
 
             return CCs;

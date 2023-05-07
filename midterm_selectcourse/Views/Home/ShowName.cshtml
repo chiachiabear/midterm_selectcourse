@@ -39,75 +39,21 @@
     </tbody>
 </table>
 
-<!--選課功能-->
-<!-- input裡的id 是要對應 label裡的for, input裡的name是指同一區選項表, 必須要一樣-->
-<form method="post" action="/Home/ShowName">
-    <input type="radio" id="searchByDepartmentAndGrade" name="search" value="departmentAndGrade" />
-    <label for="searchByDepartmentAndGrade">
-        <select name="department">
-            <option value="">科系名</option>
-            <option value="IECS">資訊</option>
-            <option value="EE">電機</option>
-        </select>
-        <select name="grade">
-            <option value="">年級</option>
-            <option value="1">一</option>
-            <option value="2">二</option>
-            <option value="3">三</option>
-            <option value="4">四</option>
-        </select>
-    </label><br />
-    <input type="radio" id="searchByCourseID" name="search" value="courseID" />
-    <label for="searchByCourseID">選課代號查詢</label><br />
 
-    <input type="submit" value="submit" />
 
-</form>
-
-<!--顯示已選課表-->
-<table class="table">
-    <thead>
-        <tr>
-            <th>選課代號</th>
-            <th>開課班級</th>
-            <th>科目名稱</th>
-            <th>教師</th>
-            <th>學分</th>
-            <th>上課地點/時間</th>
-            <th>實收/開放</th>
-            <th>修別</th>
-        </tr>
-    </thead>
-    <tbody>
-
-        @foreach (CurrentCurriculum CC in CCs)
-        {
-            <tr>
-                <td>@CC.Course.Course_id</td>
-                <td>@CC.Set_up.Department_name@CC.Set_up.Grade@CC.Set_up.Class_name</td>
-                <td>@CC.Course.Course_name</td>
-                <td>@CC.Teacher_name</td>
-                <td>@CC.Course.Credits</td>
-                <td>@CC.Classroom.Building@CC.Classroom.Room_id <br /> @CC.Section.Weekday @CC.Section.Start_time-@CC.Section.End_time</td>
-                <td>@CC.Student_amount/@CC.Classroom.Capacity</td>
-                <td>@CC.Course.Sort</td>
-            </tr>
-        }
-
-    </tbody>
-</table>
-<h2>ShowName</h2>
+<!--------------------------->
 <body>
+    <!--Logout要轉跳-->
     <script>
-		 function logout() {
-        window.location.href = '@Url.Action("Logout", "home")';
+        function logout() {
+         window.location.href = '@Url.Action("Logout", "Home")';
     }
     </script>
     <div class="header">
         <div class="header_text">fcu選課系統</div>
         <div class="additional_container">
-            <button onClick="myfuction()">登出</button>
-            <div class="additional_text">D1180757</div> <!--學號變數名稱-->
+            <button onClick="logout()">登出</button>
+            <div class="additional_text">@students[0].Student_id</div> <!--學號變數名稱-->
 
         </div>
     </div>
@@ -122,11 +68,11 @@
         <!--依條件查詢-->
         <table class="left-table">
 
-
+            
 
             <table>
 
-                <!--特定科目-->
+                <!--特定科目--><!--暫無功能-->
                 <label for="special_course">特定科目</label>
                 <select name="special_course" id="special_course">
 
@@ -141,7 +87,7 @@
 
                 <br>
                 <p>依條件查詢</p>
-                <form>
+                <form method="post" action="/Home/ShowName">
                     <!--選課代號-->
                     <input type="radio" id="select_option" name="select_option" value="course_code">
                     <label for="Course_Code">選課代號:</label>
@@ -166,8 +112,8 @@
                         </select>
                     </label><br />
                     <!--星期-->
-                    <input type="radio" id="getweekday" name="select_option" value="weekday">
-                    <label for="weekday">星期:</label>
+                    <input type="radio" id="getWeekday" name="select_option" value="weekday">
+                    <label for="Weekday">星期:</label>
 
                     <select name="week_value" id="week_value">
                         <option value="everyday">全部</option>
@@ -241,6 +187,21 @@
                 <th>實收/開放</th>
                 <th>修別</th>
             </tr>
+            @foreach (CurrentCurriculum CC in CCs)
+            {
+                <tr>
+                    <td>++--</td>
+                    <td>@CC.Course.Course_id</td>
+                    <td>@CC.Set_up.Department_name@CC.Set_up.Grade@CC.Set_up.Class_name</td>  <!--年級可能用Razor轉換成中文數字-->
+                    <td>@CC.Course.Course_name</td>
+                    <td>@CC.Teacher_name</td>
+                    <td>@CC.Course.Credits</td>
+                    <td>@CC.Classroom.Building@CC.Classroom.Room_id<br />@CC.Section.Weekday@CC.Section.Start_time-@CC.Section.End_time</td>
+                    <td>@CC.Student_amount/@CC.Classroom.Capacity</td>               <!--可能可以透過Razor把同日的課整合顯示-->
+                    <td>@CC.Course.Sort</td>
+                </tr>
+            }
+            <!--大概樣式保留
             <tr>
                 <td>加選</td>
                 <td>1259</td>
@@ -252,108 +213,10 @@
                 <td>60/60</td>
                 <td>必修</td>
             </tr>
-            <tr>
-                <td>加選</td>
-                <td>1259</td>
-                <td>資訊二丁</td>
-                <td>班級活動</td>
-                <td>林哲維</td>
-                <td>0</td>
-                <td>4-6 資電306</td>
-                <td>60/60</td>
-                <td>必修</td>
-            </tr>
-            <tr>
-                <td>加選</td>
-                <td>1259</td>
-                <td>資訊二丁</td>
-                <td>班級活動</td>
-                <td>林哲維</td>
-                <td>0</td>
-                <td>4-6 資電306</td>
-                <td>60/60</td>
-                <td>必修</td>
-            </tr>
-            <tr>
-                <td>加選</td>
-                <td>1259</td>
-                <td>資訊二丁</td>
-                <td>班級活動</td>
-                <td>林哲維</td>
-                <td>0</td>
-                <td>4-6 資電306</td>
-                <td>60/60</td>
-                <td>必修</td>
-            </tr>
-            <tr>
-                <td>加選</td>
-                <td>1259</td>
-                <td>資訊二丁</td>
-                <td>班級活動</td>
-                <td>林哲維</td>
-                <td>0</td>
-                <td>4-6 資電306</td>
-                <td>60/60</td>
-                <td>必修</td>
-            </tr>
-            <tr>
-                <td>加選</td>
-                <td>1259</td>
-                <td>資訊二丁</td>
-                <td>班級活動</td>
-                <td>林哲維</td>
-                <td>0</td>
-                <td>4-6 資電306</td>
-                <td>60/60</td>
-                <td>必修</td>
-            </tr>
-            <tr>
-                <td>加選</td>
-                <td>1259</td>
-                <td>資訊二丁</td>
-                <td>班級活動</td>
-                <td>林哲維</td>
-                <td>0</td>
-                <td>4-6 資電306</td>
-                <td>60/60</td>
-                <td>必修</td>
-            </tr>
-            <tr>
-                <td>加選</td>
-                <td>1259</td>
-                <td>資訊二丁</td>
-                <td>班級活動</td>
-                <td>林哲維</td>
-                <td>0</td>
-                <td>4-6 資電306</td>
-                <td>60/60</td>
-                <td>必修</td>
-            </tr>
-            <tr>
-                <td>加選</td>
-                <td>1259</td>
-                <td>資訊二丁</td>
-                <td>班級活動</td>
-                <td>林哲維</td>
-                <td>0</td>
-                <td>4-6 資電306</td>
-                <td>60/60</td>
-                <td>必修</td>
-            </tr>
-            <tr>
-                <td>加選</td>
-                <td>1259</td>
-                <td>資訊二丁</td>
-                <td>班級活動</td>
-                <td>林哲維</td>
-                <td>0</td>
-                <td>4-6 資電306</td>
-                <td>60/60</td>
-                <td>必修</td>
-            </tr>
+            -->
         </table>
 
-        <!--課表-->
+        <!--課表--><!--用Razor對比<td id>跟CC.Section.Section_ID, 找出放入的course_ID-->
         <table class="right-table">
 
             <tr>
