@@ -73,19 +73,20 @@
             <table>
 
                 <!--特定科目--><!--暫無功能-->
-                <label for="special_course">特定科目</label>
-                <select name="special_course" id="special_course">
+                <!--
+                    <label for="special_course">特定科目</label>
+                    <select name="special_course" id="special_course">
 
-                    <option value="general_studies">通識課程</option>
-                    <option value="physical_education">體育選項課程</option>
-                    <option value="university_chinese">大學國文</option>
-                    <option value="chinese_speculative">中文思辨與表達</option>
-                    <option value="in_English">
-                        全英語授課(EMI)
-                    </option>
-                </select>
-
-                <br>
+                        <option value="general_studies">通識課程</option>
+                        <option value="physical_education">體育選項課程</option>
+                        <option value="university_chinese">大學國文</option>
+                        <option value="chinese_speculative">中文思辨與表達</option>
+                        <option value="in_English">
+                            全英語授課(EMI)
+                        </option>
+                    </select>
+                    <br>
+                -->
                 <p>依條件查詢</p>
                 <form method="post" action="/Home/ShowName">
                     <!--選課代號-->
@@ -126,21 +127,21 @@
                     <!--節次-->
                     <label for="section">節次:</label>
                     <select name="section_value" id="section_value">
-                        <option value="all_sessions">全部</option>
-                        <option value="first_quarter">第一節(08:10~09:00)</option>
-                        <option value="second_quarter">第二節(09:10~10:00)</option>
-                        <option value="third_quarter">第三節(10:10~11:00)</option>
-                        <option value="fourth_quarter">第四節(11:10~12:00)</option>
-                        <option value="fifth_quarter">第五節(12:10~13:00)</option>
-                        <option value="sixth_quarter">第六節(13:10~14:00)</option>
-                        <option value="seventh_quarter">第七節(14:10~15:00)</option>
-                        <option value="eighth_quarter">第八節(15:10~16:00)</option>
-                        <option value="ninth_quarter">第九節(16:10~17:00)</option>
-                        <option value="tenth_quarter">第十節(17:10~18:00)</option>
-                        <option value="eleventh_quarter">第十一節(18:30~19:20)</option>
-                        <option value="twelfth_quarter">第十二節(19:25~20:15)</option>
-                        <option value="thirteenth_quarter">第十三節(20:25~21:15)</option>
-                        <option value="fourteenth_quarter">第十四節(21:20~22:10)</option>
+                        <option value="all_sections">全部</option>
+                        <option value="first_section">第一節(08:10~09:00)</option>
+                        <option value="second_section">第二節(09:10~10:00)</option>
+                        <option value="third_section">第三節(10:10~11:00)</option>
+                        <option value="fourth_section">第四節(11:10~12:00)</option>
+                        <option value="fifth_section">第五節(12:10~13:00)</option>
+                        <option value="sixth_section">第六節(13:10~14:00)</option>
+                        <option value="seventh_section">第七節(14:10~15:00)</option>
+                        <option value="eighth_section">第八節(15:10~16:00)</option>
+                        <option value="ninth_section">第九節(16:10~17:00)</option>
+                        <option value="tenth_section">第十節(17:10~18:00)</option>
+                        <option value="eleventh_section">第十一節(18:30~19:20)</option>
+                        <option value="twelfth_section">第十二節(19:25~20:15)</option>
+                        <option value="thirteenth_section">第十三節(20:25~21:15)</option>
+                        <option value="fourteenth_section">第十四節(21:20~22:10)</option>
                     </select>
                     <br>
                     <!---科目名稱-->
@@ -155,18 +156,20 @@
                     <input type="text" id="teacher_name_value" name="teacher_name_value">
                     <br>
 
-                    <!---語言-->
-                    <input type="radio" id="getlanguage" name="select_option" value="language">
-                    <label for="language">語言:</label>
-                    <select name="language_value" id="language_value">
-                        <option value="emi">英文</option>
-                        <option value="japanese">日文</option>
-                        <option value="chinese">中文</option>
-                    </select>
-                    <br>
-                    <form>
-                        <input type="submit" value="搜尋">
-                    </form>
+                    <!---語言--><!--暫無功能-->
+                    <!--
+                        <input type="radio" id="getlanguage" name="select_option" value="language">
+                        <label for="language">語言:</label>
+                        <select name="language_value" id="language_value">
+                            <option value="emi">英文</option>
+                            <option value="japanese">日文</option>
+                            <option value="chinese">中文</option>
+                        </select>
+                        <br>
+                    -->
+                    
+                     <input type="submit" value="搜尋">
+                    
                 </form>
             </table>
 

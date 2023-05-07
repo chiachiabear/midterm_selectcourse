@@ -48,17 +48,50 @@ namespace midterm_selectcourse.Controllers
 
         //接收ShowName回傳搜尋值
         [HttpPost]
-        public ActionResult ShowName(string param1, string param2)
+        public ActionResult ShowName(string select_option, string course_code_value, string department, string grade, string week_value, string section_value, string course_name_value, string teacher_name_value)
         {
-            //param1可以是課程名稱, 教師名稱
-            //雖然在參數param1無法辨認說他是以上兩者哪個
-            //但透過DBmanager內function
-            //仍然讓他去搜尋，舉例來說 在GetCourseByTeacher內的param應是老師名稱，假如現在param1是課程名稱，會找不到，因為沒有老師會叫程式設計(III)而回傳的就會是空的
-            //就可以透過兩個function哪個回傳不是空的，來判斷今天使用者是用甚麼找
-            //假如皆為空，就跟使用者說查無資料
-            System.Diagnostics.Debug.WriteLine(param1, "   ", param2);
+            DBmanager dBmanager = new DBmanager();
+
+            Dictionary<string, int> selectDict = new Dictionary<string, int>();
+            selectDict.Add("course_code", 0);
+            selectDict.Add("departmentAndGrade", 1);
+            selectDict.Add("weekday", 2);  //weekday and section
+            selectDict.Add("course_name", 3);
+            selectDict.Add("teacher_name", 4);
+
+            switch(selectDict[select_option])
+            {
+                case 0:
+                    //用course_code_value搜尋
+                    System.Diagnostics.Debug.WriteLine(course_code_value);
+                    break;
+                case 1:
+                    //用department, grade搜尋
+                    System.Diagnostics.Debug.WriteLine(department, grade);
+                    break;
+                case 2:
+                    //用week_value, section_value搜尋
+                    System.Diagnostics.Debug.WriteLine(week_value, section_value);
+                    break;
+                case 3:
+                    //用course_name_value搜尋
+                    System.Diagnostics.Debug.WriteLine(course_name_value);
+                    break;
+                case 4:
+                    //用teacher_name_value搜尋
+                    System.Diagnostics.Debug.WriteLine(teacher_name_value);
+                    break;
+                default:
+                    //顯示他可以選的課表, 比他高年的年級的必修不能選, 未滿足先修課程的課不能修
+                    break;
+            }
+
+            
             return View();
         }
+
+        
+
 
         public ActionResult Logout()
         {
