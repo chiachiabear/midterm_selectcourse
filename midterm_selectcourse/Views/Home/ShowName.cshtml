@@ -4,6 +4,7 @@
     List<Student> students = ViewBag.students;
     List<CurrentCurriculum> CCs = ViewBag.CCs;
 }
+<link href="~/Content/showname.css" rel="stylesheet" type="text/css" />
 <!--顯示學生資訊-->
 <table class="table">
     <thead>
@@ -56,11 +57,11 @@
             <option value="4">四</option>
         </select>
     </label><br />
-    <input type="radio" id="searchByCourseID" name="search" value="courseID"/>
+    <input type="radio" id="searchByCourseID" name="search" value="courseID" />
     <label for="searchByCourseID">選課代號查詢</label><br />
 
     <input type="submit" value="submit" />
-    
+
 </form>
 
 <!--顯示已選課表-->
@@ -69,12 +70,12 @@
         <tr>
             <th>選課代號</th>
             <th>開課班級</th>
-            <th>科目名稱</th> 
+            <th>科目名稱</th>
             <th>教師</th>
             <th>學分</th>
-            <th>上課地點/時間</th> 
+            <th>上課地點/時間</th>
             <th>實收/開放</th>
-            <th>修別</th> 
+            <th>修別</th>
         </tr>
     </thead>
     <tbody>
@@ -96,5 +97,393 @@
     </tbody>
 </table>
 <h2>ShowName</h2>
+<body>
+    <script>
+		 function logout() {
+        window.location.href = '@Url.Action("Logout", "home")';
+    }
+    </script>
+    <div class="header">
+        <div class="header_text">fcu選課系統</div>
+        <div class="additional_container">
+            <button onClick="myfuction()">登出</button>
+            <div class="additional_text">D1180757</div> <!--學號變數名稱-->
+
+        </div>
+    </div>
+
+    <h3>顯示本班</h3>
+
+
+    <!--此內容包含  依條件查詢  課程檢索系統  課表  -->
+    <div class="table-container">
+
+
+        <!--依條件查詢-->
+        <table class="left-table">
+
+
+
+            <table>
+
+                <!--特定科目-->
+                <label for="special_course">特定科目</label>
+                <select name="special_course" id="special_course">
+
+                    <option value="general_studies">通識課程</option>
+                    <option value="physical_education">體育選項課程</option>
+                    <option value="university_chinese">大學國文</option>
+                    <option value="chinese_speculative">中文思辨與表達</option>
+                    <option value="in_English">
+                        全英語授課(EMI)
+                    </option>
+                </select>
+
+                <br>
+                <p>依條件查詢</p>
+                <form>
+                    <!--選課代號-->
+                    <input type="radio" id="select_option" name="select_option" value="course_code">
+                    <label for="Course_Code">選課代號:</label>
+                    <input type="text" id="course_code_value" name="course_code_value"><br>
+
+
+
+                    <!--系級-->
+                    <input type="radio" id="searchByDepartmentAndGrade" name="select_option" value="departmentAndGrade" />
+                    <label for="searchByDepartmentAndGrade">
+                        <select name="department">
+                            <option value="">科系名</option>
+                            <option value="資訊">資訊</option>
+                            <option value="電機">電機</option>
+                        </select>
+                        <select name="grade">
+                            <option value="">年級</option>
+                            <option value="1">一</option>
+                            <option value="2">二</option>
+                            <option value="3">三</option>
+                            <option value="4">四</option>
+                        </select>
+                    </label><br />
+                    <!--星期-->
+                    <input type="radio" id="getweekday" name="select_option" value="weekday">
+                    <label for="weekday">星期:</label>
+
+                    <select name="week_value" id="week_value">
+                        <option value="everyday">全部</option>
+                        <option value="monday">星期一</option>
+                        <option value="tuesday">星期二</option>
+                        <option value="wednesday">星期三</option>
+                        <option value="thursday">星期四</option>
+                        <option value="friday">星期五</option>
+                    </select>
+                    <!--節次-->
+                    <label for="section">節次:</label>
+                    <select name="section_value" id="section_value">
+                        <option value="all_sessions">全部</option>
+                        <option value="first_quarter">第一節(08:10~09:00)</option>
+                        <option value="second_quarter">第二節(09:10~10:00)</option>
+                        <option value="third_quarter">第三節(10:10~11:00)</option>
+                        <option value="fourth_quarter">第四節(11:10~12:00)</option>
+                        <option value="fifth_quarter">第五節(12:10~13:00)</option>
+                        <option value="sixth_quarter">第六節(13:10~14:00)</option>
+                        <option value="seventh_quarter">第七節(14:10~15:00)</option>
+                        <option value="eighth_quarter">第八節(15:10~16:00)</option>
+                        <option value="ninth_quarter">第九節(16:10~17:00)</option>
+                        <option value="tenth_quarter">第十節(17:10~18:00)</option>
+                        <option value="eleventh_quarter">第十一節(18:30~19:20)</option>
+                        <option value="twelfth_quarter">第十二節(19:25~20:15)</option>
+                        <option value="thirteenth_quarter">第十三節(20:25~21:15)</option>
+                        <option value="fourteenth_quarter">第十四節(21:20~22:10)</option>
+                    </select>
+                    <br>
+                    <!---科目名稱-->
+                    <input type="radio" id="getcourse_name" name="select_option" value="course_name">
+                    <label for="course_name">科目名稱:</label>
+                    <input type="text" id="course_name_value" name="course_name_value">
+                    <br>
+
+                    <!---老師名字-->
+                    <input type="radio" id="getteacher_name" name="select_option" value="teacher_name">
+                    <label for="teacher_name">開課老師姓名:</label>
+                    <input type="text" id="teacher_name_value" name="teacher_name_value">
+                    <br>
+
+                    <!---語言-->
+                    <input type="radio" id="getlanguage" name="select_option" value="language">
+                    <label for="language">語言:</label>
+                    <select name="language_value" id="language_value">
+                        <option value="emi">英文</option>
+                        <option value="japanese">日文</option>
+                        <option value="chinese">中文</option>
+                    </select>
+                    <br>
+                    <form>
+                        <input type="submit" value="搜尋">
+                    </form>
+                </form>
+            </table>
+
+
+        </table>
+
+
+        <!--課程檢索系統-->
+        <table class="center-table">
+            <tr>
+                <th>加退選</th>
+                <th>選課代號</th>
+                <th>開課班級</th>
+                <th>科目名稱</th>
+                <th>教師</th>
+                <th>學分</th><!--系別年級班級再開課班級裡面-->
+                <th>上課時間/地點</th>
+                <th>實收/開放</th>
+                <th>修別</th>
+            </tr>
+            <tr>
+                <td>加選</td>
+                <td>1259</td>
+                <td>資訊二丁</td>
+                <td>班級活動</td>
+                <td>林哲維</td>
+                <td>0</td>
+                <td>4-6 資電306</td>
+                <td>60/60</td>
+                <td>必修</td>
+            </tr>
+            <tr>
+                <td>加選</td>
+                <td>1259</td>
+                <td>資訊二丁</td>
+                <td>班級活動</td>
+                <td>林哲維</td>
+                <td>0</td>
+                <td>4-6 資電306</td>
+                <td>60/60</td>
+                <td>必修</td>
+            </tr>
+            <tr>
+                <td>加選</td>
+                <td>1259</td>
+                <td>資訊二丁</td>
+                <td>班級活動</td>
+                <td>林哲維</td>
+                <td>0</td>
+                <td>4-6 資電306</td>
+                <td>60/60</td>
+                <td>必修</td>
+            </tr>
+            <tr>
+                <td>加選</td>
+                <td>1259</td>
+                <td>資訊二丁</td>
+                <td>班級活動</td>
+                <td>林哲維</td>
+                <td>0</td>
+                <td>4-6 資電306</td>
+                <td>60/60</td>
+                <td>必修</td>
+            </tr>
+            <tr>
+                <td>加選</td>
+                <td>1259</td>
+                <td>資訊二丁</td>
+                <td>班級活動</td>
+                <td>林哲維</td>
+                <td>0</td>
+                <td>4-6 資電306</td>
+                <td>60/60</td>
+                <td>必修</td>
+            </tr>
+            <tr>
+                <td>加選</td>
+                <td>1259</td>
+                <td>資訊二丁</td>
+                <td>班級活動</td>
+                <td>林哲維</td>
+                <td>0</td>
+                <td>4-6 資電306</td>
+                <td>60/60</td>
+                <td>必修</td>
+            </tr>
+            <tr>
+                <td>加選</td>
+                <td>1259</td>
+                <td>資訊二丁</td>
+                <td>班級活動</td>
+                <td>林哲維</td>
+                <td>0</td>
+                <td>4-6 資電306</td>
+                <td>60/60</td>
+                <td>必修</td>
+            </tr>
+            <tr>
+                <td>加選</td>
+                <td>1259</td>
+                <td>資訊二丁</td>
+                <td>班級活動</td>
+                <td>林哲維</td>
+                <td>0</td>
+                <td>4-6 資電306</td>
+                <td>60/60</td>
+                <td>必修</td>
+            </tr>
+            <tr>
+                <td>加選</td>
+                <td>1259</td>
+                <td>資訊二丁</td>
+                <td>班級活動</td>
+                <td>林哲維</td>
+                <td>0</td>
+                <td>4-6 資電306</td>
+                <td>60/60</td>
+                <td>必修</td>
+            </tr>
+            <tr>
+                <td>加選</td>
+                <td>1259</td>
+                <td>資訊二丁</td>
+                <td>班級活動</td>
+                <td>林哲維</td>
+                <td>0</td>
+                <td>4-6 資電306</td>
+                <td>60/60</td>
+                <td>必修</td>
+            </tr>
+        </table>
+
+        <!--課表-->
+        <table class="right-table">
+
+            <tr>
+                <th></th> <!--星期/節次-->
+                <th>星期一</th>
+                <th>星期二</th>
+                <th>星期三</th>
+                <th>星期四</th>
+                <th>星期五</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td id="101">1259</td>
+                <td id="201">1259</td>
+                <td id="301">1259</td>
+                <td id="401">1259</td>
+                <td id="501">1259</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td id="102">1259</td>
+                <td id="202">1259</td>
+                <td id="302">1259</td>
+                <td id="402">1259</td>
+                <td id="502">1259</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td id="103">1259</td>
+                <td id="203">1259</td>
+                <td id="303">1259</td>
+                <td id="403">1259</td>
+                <td id="503">1259</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td id="104">1259</td>
+                <td id="204">1259</td>
+                <td id="304">1259</td>
+                <td id="404">1259</td>
+                <td id="504">1259</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td id="105">1259</td>
+                <td id="205">1259</td>
+                <td id="305">1259</td>
+                <td id="405">1259</td>
+                <td id="505">1259</td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td id="106">1259</td>
+                <td id="206">1259</td>
+                <td id="306">1259</td>
+                <td id="406">1259</td>
+                <td id="506">1259</td>
+            </tr>
+            <tr>
+                <td>7</td>
+                <td id="107">1259</td>
+                <td id="207">1259</td>
+                <td id="307">1259</td>
+                <td id="407">1259</td>
+                <td id="507">1259</td>
+            </tr>
+            <tr>
+                <td>8</td>
+                <td id="108">1259</td>
+                <td id="208">1259</td>
+                <td id="308">1259</td>
+                <td id="408">1259</td>
+                <td id="508">1259</td>
+            </tr>
+            <tr>
+                <td>9</td>
+                <td id="109">1259</td>
+                <td id="209">1259</td>
+                <td id="309">1259</td>
+                <td id="409">1259</td>
+                <td id="509">1259</td>
+            </tr>
+            <tr>
+                <td>10</td>
+                <td id="110">1259</td>
+                <td id="210">1259</td>
+                <td id="310">1259</td>
+                <td id="410">1259</td>
+                <td id="510">1259</td>
+            </tr>
+            <tr>
+                <td>11</td>
+                <td id="111">1259</td>
+                <td id="211">1259</td>
+                <td id="311">1259</td>
+                <td id="411">1259</td>
+                <td id="511">1259</td>
+            </tr>
+            <tr>
+                <td>12</td>
+                <td id="112">1259</td>
+                <td id="212">1259</td>
+                <td id="312">1259</td>
+                <td id="412">1259</td>
+                <td id="512">1259</td>
+            </tr>
+            <tr>
+                <td>13</td>
+                <td id="113">1259</td>
+                <td id="213">1259</td>
+                <td id="313">1259</td>
+                <td id="413">1259</td>
+                <td id="513">1259</td>
+            </tr>
+            <tr>
+                <td>14</td>
+                <td id="114">1259</td>
+                <td id="214">1259</td>
+                <td id="314">1259</td>
+                <td id="414">1259</td>
+                <td id="514">1259</td>
+            </tr>
+        </table>
+    </div>
+
+</body>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
 
 

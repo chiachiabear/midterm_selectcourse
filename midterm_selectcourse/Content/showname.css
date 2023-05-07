@@ -1,0 +1,47 @@
+@charset "utf-8";
+body
+{
+	background-color: #f5f5f5;
+}
+  .header {
+    background-color: #41a7cd;
+    color: white;
+    width: 100%;
+    height: 99%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+  }
+  .header_text {
+    font-size: 24px;
+	font-family: "微軟正黑體";  
+  }
+  .additional_container {
+    display: flex;
+	color: #097688;
+    align-items: center;	 
+  }
+  .additional_text {
+    font-size: 18px;
+    background-color: #EAFF9E;
+    color: #678bfa;
+    padding: 5px;
+    border-radius: 50px;
+	margin-top:5%;
+	margin-bottom: 5%;
+	font-family: "微軟正黑體";
+  }
+  .myfuction {
+    color: white;
+    margin-right: 10px;
+    float: left;
+	align-items: center;
+	font-family: "微軟正黑體";
+  }
+
+  .table_container {
+    display: flex;
+    justify-content: space-between;
+  }
