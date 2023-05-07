@@ -45,16 +45,22 @@ namespace midterm_selectcourse.Controllers
             ViewBag.CCs = CCs;  //還需要整理一下，讓開課班級有二合、讓同一個課程
             return View();
         }
-        //[HttpPost]
-        //public ActionResult ShowName(string param)
-        //{
-            //param1(param one)可以是課程名稱, 教師名稱
+
+        //接收ShowName回傳搜尋值
+        [HttpPost]
+        public ActionResult ShowName(string param1, string param2)
+        {
+            //param1可以是課程名稱, 教師名稱
             //雖然在參數param1無法辨認說他是以上兩者哪個
             //但透過DBmanager內function
             //仍然讓他去搜尋，舉例來說 在GetCourseByTeacher內的param應是老師名稱，假如現在param1是課程名稱，會找不到，因為沒有老師會叫程式設計(III)而回傳的就會是空的
             //就可以透過兩個function哪個回傳不是空的，來判斷今天使用者是用甚麼找
             //假如皆為空，就跟使用者說查無資料
-        //}
+
+            
+
+            return View();
+        }
 
 
     }

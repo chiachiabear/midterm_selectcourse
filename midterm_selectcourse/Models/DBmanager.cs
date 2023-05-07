@@ -141,7 +141,7 @@ namespace midterm_selectcourse.Models
                     CC.Section.Start_time = reader.GetTimeSpan(reader.GetOrdinal("start_time"));
                     CC.Section.End_time = reader.GetTimeSpan(reader.GetOrdinal("end_time"));
 
-                    //SCC.Student_amount = reader.GetInt32(reader.GetOrdinal("student_amount"));
+                    //CC.Student_amount = reader.GetInt32(reader.GetOrdinal("student_amount"));
                     CCs.Add(CC);
                 }
             }
@@ -149,7 +149,39 @@ namespace midterm_selectcourse.Models
             {
                 Console.WriteLine("資料庫為空！");
             }
+
+            //更改sqlCommand後再次開啟 sqlConnection
+            sqlCommand.CommandText = @"SELECT COUNT(L2.student_ID) AS count
+                                          FROM 
+                                          (
+                                                (student
+                                                INNER JOIN learn L1
+                                                ON student.student_ID = L1.student_ID)
+                                          INNER JOIN learn L2
+                                          ON L2.course_ID = L1.course_ID)
+                                          WHERE student.student_ID = @student_id
+                                      ";
+            reader.Close();
+            SqlDataReader reader2 = sqlCommand.ExecuteReader();
+            //sqlCommand.Connection = sqlConnection;
+            //sqlCommand.Parameters.Add(new SqlParameter("@student_id", student_id));
+            
+            List<int> counts = new List<int>();
+            if (reader2.HasRows)
+            {
+                
+                while(reader2.Read())
+                {
+                    int temp = new int();
+                    temp = reader.GetInt32(reader.GetOrdinal("student_amount"));
+                    counts.Add(temp);
+                }
+            }
             sqlConnection.Close();
+            for(int i=0; i<counts.Count; i++)
+            {
+                CCs[i].Student_amount = counts[i];
+            }
             return CCs;
         }
 
