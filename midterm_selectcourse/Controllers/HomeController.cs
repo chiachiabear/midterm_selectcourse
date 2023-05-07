@@ -40,9 +40,9 @@ namespace midterm_selectcourse.Controllers
             //初始的ShowName會顯示用學號搜出來的已選課表
             DBmanager dBmanager = new DBmanager();
             List<Student> students = dBmanager.GetStudents(param);
-            List<CurrentCurriculum> CC = dBmanager.GetStudentsCurriculum(param);
+            List<CurrentCurriculum> CCs = dBmanager.GetStudentsCurriculum(param);
             ViewBag.students = students;
-            ViewBag.CC = CC;
+            ViewBag.CCs = CCs;  //還需要整理一下，讓開課班級有二合、讓同一個課程
             return View();
         }
         //[HttpPost]

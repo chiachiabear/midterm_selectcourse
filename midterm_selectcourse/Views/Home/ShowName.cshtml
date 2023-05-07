@@ -2,8 +2,9 @@
 @using midterm_selectcourse.Models;
 @{
     List<Student> students = ViewBag.students;
-    List<CurrentCurriculum> CCs = ViewBag.CC;
+    List<CurrentCurriculum> CCs = ViewBag.CCs;
 }
+<!--顯示學生資訊-->
 <table class="table">
     <thead>
         <tr>
@@ -23,21 +24,46 @@
         @foreach (Student student in students)
         {
             <tr>
-                <th>@student.Student_id</th>
-                <th>@student.Department_name</th>
-                <th>@student.Account_number</th>
-                <th>@student.Grade</th>
-                <th>@student.Class_name</th>
-                <th>@student.Student_name</th>
-                <th>@student.Student_grade</th>
-                <th>@student.Total_credits</th>
+                <td>@student.Student_id</td>
+                <td>@student.Department_name</td>
+                <td>@student.Account_number</td>
+                <td>@student.Grade</td>
+                <td>@student.Class_name</td>
+                <td>@student.Student_name</td>
+                <td>@student.Student_grade</td>
+                <td>@student.Total_credits</td>
             </tr>
         }
 
     </tbody>
 </table>
 
-<h1></h1>
+<!--選課功能-->
+<!-- input裡的id 是要對應 label裡的for, input裡的name是指同一區選項表, 必須要一樣-->
+<form method="post" action="/Home/ShowName">
+    <input type="radio" id="searchByDepartmentAndGrade" name="search" value="departmentAndGrade" />
+    <label for="searchByDepartmentAndGrade">
+        <select name="department">
+            <option value="">科系名</option>
+            <option value="IECS">資訊</option>
+            <option value="EE">電機</option>
+        </select>
+        <select name="grade">
+            <option value="">年級</option>
+            <option value="1">一</option>
+            <option value="2">二</option>
+            <option value="3">三</option>
+            <option value="4">四</option>
+        </select>
+    </label><br />
+    <input type="radio" id="searchByCourseID" name="search" value="courseID"/>
+    <label for="searchByCourseID">選課代號查詢</label><br />
+
+    <input type="submit" value="submit" />
+    
+</form>
+
+<!--顯示已選課表-->
 <table class="table">
     <thead>
         <tr>
@@ -56,15 +82,14 @@
         @foreach (CurrentCurriculum CC in CCs)
         {
             <tr>
-                <th>@CC.Course.Course_id</th>
-                <th>@CC.Set_up.Department_name @CC.Set_up.Grade @CC.Set_up.Class_name</th>
-                <th>@CC.Course.Course_name</th>
-                <th>@CC.Teacher_name</th>
-                <th>@CC.Course.Credits</th>
-                <th>@CC.Classroom.Building @CC.Classroom.Room_id  </th>
-                <th typeof="">@CC.Section.Weekday @CC.Section.Start_time @CC.Section.End_time</th>
-                <th>??/@CC.Classroom.Capacity</th>
-                <th>@CC.Course.Sort</th>
+                <td>@CC.Course.Course_id</td>
+                <td>@CC.Set_up.Department_name@CC.Set_up.Grade@CC.Set_up.Class_name</td>
+                <td>@CC.Course.Course_name</td>
+                <td>@CC.Teacher_name</td>
+                <td>@CC.Course.Credits</td>
+                <td>@CC.Classroom.Building@CC.Classroom.Room_id <br /> @CC.Section.Weekday @CC.Section.Start_time-@CC.Section.End_time</td>
+                <td>??/@CC.Classroom.Capacity</td>
+                <td>@CC.Course.Sort</td>
             </tr>
         }
 
