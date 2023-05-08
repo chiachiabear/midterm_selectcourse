@@ -58,20 +58,49 @@ namespace midterm_selectcourse.Controllers
             selectDict.Add("weekday", 2);  //weekday and section
             selectDict.Add("course_name", 3);
             selectDict.Add("teacher_name", 4);
-
-            switch(selectDict[select_option])
+            List<CurrentCurriculum> CCs;
+            List<Student> students;
+            switch (selectDict[select_option])
             {
                 case 0:
                     //用course_code_value搜尋
                     System.Diagnostics.Debug.WriteLine(course_code_value);
+                    CCs = dBmanager.GetCCsBYCourseID(course_code_value);
+                    students = dBmanager.GetStudents( Session["account"].ToString());
+                    ViewBag.students = students;
+                    ViewBag.CCs = CCs;
                     break;
                 case 1:
                     //用department, grade搜尋
                     System.Diagnostics.Debug.WriteLine(department, grade);
+                    CCs = dBmanager.GetCCsBYdepartmentAndGradestring(department, grade);
+                    students = dBmanager.GetStudents(Session["account"].ToString());
+                    ViewBag.students = students;
+                    ViewBag.CCs = CCs;
                     break;
                 case 2:
                     //用week_value, section_value搜尋
                     System.Diagnostics.Debug.WriteLine(week_value, section_value);
+                    if (week_value == "all" && section_value == "all")
+                    {
+                        CCs = dBmanager.GetCCsBYweekdayallwalls(week_value, section_value);
+                    }
+                    else if (week_value == "all")
+                    {
+                        CCs = dBmanager.GetCCsBYweekdayallw(week_value, section_value);
+                    }
+                    else if (section_value == "all")
+                    {
+                        CCs = dBmanager.GetCCsBYweekdayalls(week_value, section_value);
+                    }
+                    else
+                    {
+                        string section_cat = week_value + section_value;
+                        CCs = dBmanager.GetCCsBYweekday(section_cat);
+                    }
+                    students = dBmanager.GetStudents(Session["account"].ToString());
+                    ViewBag.students = students;
+                    ViewBag.CCs = CCs;
                     break;
                 case 3:
                     //用course_name_value搜尋
@@ -83,6 +112,7 @@ namespace midterm_selectcourse.Controllers
                     break;
                 default:
                     //顯示他可以選的課表, 比他高年的年級的必修不能選, 未滿足先修課程的課不能修
+
                     break;
             }
 
