@@ -173,6 +173,34 @@ namespace midterm_selectcourse.Controllers
             }
 
             //透過TempData傳暫時資料到ShowName
+            //目前還沒
+            return RedirectToAction("ShowName", new { param = Session["account"] });
+        }
+
+        public ActionResult DropCourse(int course_ID)
+        {
+            DBmanager dBmanager = new DBmanager();
+            if(dBmanager.GetCreditsNow(Session["account"].ToString()) - dBmanager.GetCourseCredits(course_ID) >= 9)  //若退選後 >= 9學分，可以退
+            {
+                if(!dBmanager.IfRequired(Session["account"].ToString(), course_ID))  //檢查是否為本系必修
+                {
+                    System.Diagnostics.Debug.WriteLine("此課非本系必修，且退後大於9學分，退選成功");
+                    //可以退
+                    dBmanager.DropCourseByStudentIDCourseID(Session["account"].ToString(), course_ID);
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine("此課為本系必修，退選失敗");
+                    //欲退選課為本系必修，退選失敗
+                }
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("退選後未滿9學分，退選失敗");
+                //退選後不滿9學分，退選失敗
+            }
+
+
             return RedirectToAction("ShowName", new { param = Session["account"] });
         }
     }

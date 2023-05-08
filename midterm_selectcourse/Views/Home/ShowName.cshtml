@@ -193,7 +193,10 @@
             @foreach (CurrentCurriculum CC in CCs)
             {
                 <tr>
-                    <td>@Html.ActionLink("加選", "TakeCourse", new { course_ID = CC.Course.Course_id })</td>
+                    <td>
+                        @Html.ActionLink("加選", "TakeCourse", new { course_ID = CC.Course.Course_id }) <br />
+                        @Html.ActionLink("退選", "DropCourse", new { course_ID = CC.Course.Course_id })
+                    </td>
                     <td>@CC.Course.Course_id</td>
                     <td>@CC.Set_up.Department_name@CC.Set_up.Grade@CC.Set_up.Class_name</td>  <!--年級可能用Razor轉換成中文數字-->
                     <td>@CC.Course.Course_name</td>

@@ -707,6 +707,7 @@ namespace midterm_selectcourse.Models
             return answer;
         }
 
+        //回傳當前課表總學分
         public int GetCreditsNow(string student_ID)
         {
             int sum = new int();
@@ -733,6 +734,7 @@ namespace midterm_selectcourse.Models
             return sum;
         }
 
+        //回傳該課學分
         public int GetCourseCredits(int course_ID)
         {
             int credits = new int();
@@ -762,8 +764,8 @@ namespace midterm_selectcourse.Models
         {
             SqlConnection sqlConnection = new SqlConnection(ConnStr);
             SqlCommand sqlCommand = new SqlCommand(@"INSERT 
-                                                INTO learn (student_ID, course_ID, semester, condition)
-                                                VALUES (@student_id, @course_id, @semester, @condition)");
+                                                    INTO learn (student_ID, course_ID, semester, condition)
+                                                    VALUES (@student_id, @course_id, @semester, @condition)");
             sqlCommand.Connection = sqlConnection;
 
             sqlCommand.Parameters.Add(new SqlParameter("@student_id", student_ID));
@@ -776,6 +778,101 @@ namespace midterm_selectcourse.Models
             sqlConnection.Close();
             
             //end, 加選成功
+        }
+
+        //判斷是否為本科必修
+        public bool IfRequired(string student_ID, int course_ID) 
+        {
+            //先取得學生科系
+            string s_department_name="";
+            SqlConnection sqlConnection = new SqlConnection(ConnStr);
+            SqlCommand sqlCommand = new SqlCommand(@"SELECT department_name
+                                                    FROM student
+                                                    WHERE student_ID = @student_id");
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.Parameters.Add(new SqlParameter("@student_id", student_ID));
+            sqlConnection.Open();
+
+            SqlDataReader reader = sqlCommand.ExecuteReader();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                   s_department_name = reader.GetString(reader.GetOrdinal("department_name"));
+                }
+            }
+            sqlConnection.Close();
+
+            //再取得欲退課的科系
+            string c_department_name="";
+            SqlConnection conn = new SqlConnection(ConnStr);
+            SqlCommand cmd = new SqlCommand(@"SELECT department_name
+                                             FROM set_up
+                                             WHERE course_ID = @course_id");
+            cmd.Connection = conn;
+            cmd.Parameters.Add(new SqlParameter("@course_id", course_ID));
+            conn.Open();
+
+            SqlDataReader r1 = cmd.ExecuteReader();
+            if (r1.HasRows)
+            {
+                while(r1.Read())
+                {
+                    c_department_name = r1.GetString(r1.GetOrdinal("department_name"));
+                }
+            }
+            conn.Close();
+
+            //再取得欲退選課的修別
+            string c_sort = "";
+            SqlConnection conn2 = new SqlConnection(ConnStr);
+            SqlCommand cmd2 = new SqlCommand(@"SELECT sort
+                                              FROM course
+                                              WHERE course_ID = @c_id");
+            cmd2.Connection = conn2;
+            cmd2.Parameters.Add(new SqlParameter("@c_id", course_ID));
+            conn2.Open();
+
+            SqlDataReader r2 = cmd2.ExecuteReader();
+            if(r2.HasRows)
+            {
+                while(r2.Read())
+                {
+                    c_sort = r2.GetString(r2.GetOrdinal("sort"));
+                }
+            }
+            conn2.Close();
+
+            //先判斷是否同科系
+            if(s_department_name.Equals(c_department_name))  //兩者相不相等，回傳布林
+            {
+                //同科系，接著判斷修別
+                if(c_sort.Equals("必修"))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        //退選
+        public void DropCourseByStudentIDCourseID(string student_ID, int course_ID)
+        {
+            SqlConnection sqlConnection = new SqlConnection(ConnStr);
+            SqlCommand sqlCommand = new SqlCommand(@"DELETE 
+                                                    FROM learn
+                                                    WHERE student_ID = @student_id AND course_ID = @course_id AND semester = @semester AND condition = @condition");
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.Parameters.Add(new SqlParameter("@student_id", student_ID));
+            sqlCommand.Parameters.Add(new SqlParameter("@course_id", course_ID));
+            sqlCommand.Parameters.Add(new SqlParameter("@semester", 1112));
+            sqlCommand.Parameters.Add(new SqlParameter("@condition", "正在修"));
+
+            sqlConnection.Open();
+            sqlCommand.ExecuteNonQuery();
+            sqlConnection.Close();
+
+            //end, 退選成功
         }
 
 
