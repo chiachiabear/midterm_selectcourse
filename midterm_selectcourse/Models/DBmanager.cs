@@ -658,9 +658,10 @@ namespace midterm_selectcourse.Models
             SqlCommand sqlCommand = new SqlCommand(@"SELECT course.course_name
                                                     FROM learn 
 	                                                INNER JOIN course
-	                                                ON learn.course_ID = course.course_ID AND learn.condition = '正在修'
+	                                                ON learn.course_ID = course.course_ID AND learn.condition = @condition
                                                     WHERE learn.student_ID = @student_id");
             sqlCommand.Connection = sqlConnection;
+            sqlCommand.Parameters.Add(new SqlParameter("@condition", "正在修"));
             sqlCommand.Parameters.Add(new SqlParameter("@student_id", student_ID));
             sqlConnection.Open();
 
@@ -715,9 +716,10 @@ namespace midterm_selectcourse.Models
             SqlCommand sqlCommand = new SqlCommand(@"SELECT SUM(course.credits) AS sum
                                                     FROM learn
                                                     INNER JOIN course
-                                                    ON learn.course_ID = course.course_ID
+                                                    ON learn.course_ID = course.course_ID AND learn.condition = @condition
                                                     WHERE learn.student_ID = @student_id");
             sqlCommand.Connection = sqlConnection;
+            sqlCommand.Parameters.Add(new SqlParameter("@condition", "正在修"));
             sqlCommand.Parameters.Add(new SqlParameter("@student_id", student_ID));
             sqlConnection.Open();
 
