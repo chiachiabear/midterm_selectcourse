@@ -202,129 +202,7 @@ namespace midterm_selectcourse.Models
             return CCs;
         }
 
-        //回傳課程已選人數
-        public int GetCoursePeople(int course_ID)
-        {
-            int reInt = -1;
-            SqlConnection sqlConnection = new SqlConnection(ConnStr);
-            SqlCommand sqlCommand = new SqlCommand(@"SELECT COUNT(student_ID) AS count
-                                                    FROM (course 
-	                                                      INNER JOIN learn 
-	                                                      ON course.course_ID = learn.course_ID AND learn.condition=@condition)
-                                                    WHERE course.course_ID = @course_id");
-            sqlCommand.Connection = sqlConnection;
-            sqlCommand.Parameters.Add(new SqlParameter("@condition", "正在修"));
-            sqlCommand.Parameters.Add(new SqlParameter("@course_id", course_ID));
-            sqlConnection.Open();
 
-            SqlDataReader reader = sqlCommand.ExecuteReader();
-            if (reader.HasRows)
-            {
-                while (reader.Read())
-                {
-                    reInt = reader.GetInt32(reader.GetOrdinal("count"));
-                }
-            }
-            sqlConnection.Close();
-            return reInt;
-        }
-
-        //回傳課程上限人數
-        public int GetCourseCapacity(int course_ID)
-        {
-            int reInt = -1;
-            SqlConnection sqlConnection = new SqlConnection(ConnStr);
-            SqlCommand sqlCommand = new SqlCommand(@"SELECT TOP 1 classroom.capacity
-                                                    FROM ( occurred_in 
-	                                                       INNER JOIN classroom
-	                                                       ON occurred_in.building = classroom.building AND occurred_in.room_ID = classroom.room_id)
-                                                    WHERE occurred_in.course_ID = @course_id");
-            sqlCommand.Connection = sqlConnection;
-            sqlCommand.Parameters.Add(new SqlParameter("@course_id", course_ID));
-            sqlConnection.Open();
-
-            SqlDataReader reader = sqlCommand.ExecuteReader();
-            if (reader.HasRows)
-            {
-                while (reader.Read())
-                {
-                    reInt = reader.GetInt32(reader.GetOrdinal("capacity"));
-                }
-            }
-            sqlConnection.Close();
-            return reInt;
-        }
-
-        //回傳是否撞已選課節數
-        public bool IfSectionBump(string student_ID, int course_ID)
-        {
-            List<int> section_IDs = new List<int>(); ;
-            List<int> courseSection_IDs = new List<int>();
-            
-            //先拿學生有的section
-            SqlConnection sqlConnection = new SqlConnection(ConnStr);
-            SqlCommand sqlCommand = new SqlCommand(@"SELECT section.section_ID
-                                                    FROM ( learn 
-	                                                       INNER JOIN occurred_in
-	                                                       ON learn.course_ID = occurred_in.course_ID AND learn.condition = @condition)
-                                                    INNER JOIN section
-                                                    ON occurred_in.section_ID = section.section_ID
-                                                    WHERE learn.student_ID = '@student_id'");
-            sqlCommand.Connection = sqlConnection;
-            sqlCommand.Parameters.Add(new SqlParameter("@condition", "正在修"));
-            sqlCommand.Parameters.Add(new SqlParameter("@student_id", student_ID));
-            sqlConnection.Open();
-
-            SqlDataReader reader = sqlCommand.ExecuteReader();
-            if (reader.HasRows)
-            {
-                while (reader.Read())
-                {
-                    int temp = new int();
-                    temp = reader.GetInt32(reader.GetOrdinal("section_ID"));
-                    section_IDs.Add(temp);
-                }
-            }
-            sqlConnection.Close();
-
-            //再拿欲選課的section
-            SqlConnection connection = new SqlConnection(ConnStr);
-            SqlCommand cmd = new SqlCommand(@"SELECT section.section_ID
-                                            FROM ( occurred_in
-	                                               INNER JOIN section
-	                                               ON occurred_in.section_ID = section.section_ID )
-                                            WHERE occurred_in.course_ID = @course_id");
-            cmd.Connection = connection;
-            cmd.Parameters.Add(new SqlParameter("@course_id", course_ID));
-            connection.Open();
-
-            SqlDataReader reader2 = sqlCommand.ExecuteReader();
-            if(reader2.HasRows)
-            {
-                while(reader2.Read())
-                {
-                    int temp = new int();
-                    temp = reader2.GetInt32(reader2.GetOrdinal("section_ID"));
-                    courseSection_IDs.Add(temp);
-                }
-            }
-            connection.Close();
-
-            //判斷後者List有沒存在於前者List中
-            bool answer = false;
-            foreach (int i in courseSection_IDs)
-            {
-                foreach(int j in section_IDs)
-                {
-                    if(i == j)
-                    {
-                        answer = true;
-                    }
-                }
-            }
-
-            return answer;
-        }
 
         public List<CurrentCurriculum> GetCCsBYCourseID(string course_code_value)
         {
@@ -646,7 +524,131 @@ namespace midterm_selectcourse.Models
 
 
 
+        //回傳課程已選人數
+        public int GetCoursePeople(int course_ID)
+        {
+            int reInt = -1;
+            SqlConnection sqlConnection = new SqlConnection(ConnStr);
+            SqlCommand sqlCommand = new SqlCommand(@"SELECT COUNT(student_ID) AS count
+                                                    FROM (course 
+	                                                      INNER JOIN learn 
+	                                                      ON course.course_ID = learn.course_ID AND learn.condition=@condition)
+                                                    WHERE course.course_ID = @course_id");
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.Parameters.Add(new SqlParameter("@condition", "正在修"));
+            sqlCommand.Parameters.Add(new SqlParameter("@course_id", course_ID));
+            sqlConnection.Open();
 
+            SqlDataReader reader = sqlCommand.ExecuteReader();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    reInt = reader.GetInt32(reader.GetOrdinal("count"));
+                }
+            }
+            sqlConnection.Close();
+            return reInt;
+        }
+
+        //回傳課程上限人數
+        public int GetCourseCapacity(int course_ID)
+        {
+            int reInt = -1;
+            SqlConnection sqlConnection = new SqlConnection(ConnStr);
+            SqlCommand sqlCommand = new SqlCommand(@"SELECT TOP 1 classroom.capacity
+                                                    FROM ( occurred_in 
+	                                                       INNER JOIN classroom
+	                                                       ON occurred_in.building = classroom.building AND occurred_in.room_ID = classroom.room_id)
+                                                    WHERE occurred_in.course_ID = @course_id");
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.Parameters.Add(new SqlParameter("@course_id", course_ID));
+            sqlConnection.Open();
+
+            SqlDataReader reader = sqlCommand.ExecuteReader();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    reInt = reader.GetInt32(reader.GetOrdinal("capacity"));
+                }
+            }
+            sqlConnection.Close();
+            return reInt;
+        }
+
+
+
+        //回傳是否撞已選課節數
+        public bool IfSectionBump(string student_ID, int course_ID)
+        {
+            List<int> section_IDs = new List<int>(); ;
+            List<int> courseSection_IDs = new List<int>();
+
+            //先拿學生有的section
+            SqlConnection sqlConnection = new SqlConnection(ConnStr);
+            SqlCommand sqlCommand = new SqlCommand(@"SELECT section.section_ID
+                                                    FROM ( learn 
+	                                                       INNER JOIN occurred_in
+	                                                       ON learn.course_ID = occurred_in.course_ID AND learn.condition = @condition)
+                                                    INNER JOIN section
+                                                    ON occurred_in.section_ID = section.section_ID
+                                                    WHERE learn.student_ID = '@student_id'");
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.Parameters.Add(new SqlParameter("@condition", "正在修"));
+            sqlCommand.Parameters.Add(new SqlParameter("@student_id", student_ID));
+            sqlConnection.Open();
+
+            SqlDataReader reader = sqlCommand.ExecuteReader();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    int temp = new int();
+                    temp = reader.GetInt32(reader.GetOrdinal("section_ID"));
+                    section_IDs.Add(temp);
+                }
+            }
+            sqlConnection.Close();
+
+            //再拿欲選課的section
+            SqlConnection connection = new SqlConnection(ConnStr);
+            SqlCommand cmd = new SqlCommand(@"SELECT section.section_ID
+                                            FROM ( occurred_in
+	                                               INNER JOIN section
+	                                               ON occurred_in.section_ID = section.section_ID )
+                                            WHERE occurred_in.course_ID = @course_id");
+            cmd.Connection = connection;
+            cmd.Parameters.Add(new SqlParameter("@course_id", course_ID));
+            connection.Open();
+
+            SqlDataReader reader2 = sqlCommand.ExecuteReader();
+            if (reader2.HasRows)
+            {
+                while (reader2.Read())
+                {
+                    int temp = new int();
+                    temp = reader2.GetInt32(reader2.GetOrdinal("section_ID"));
+                    courseSection_IDs.Add(temp);
+                }
+            }
+            connection.Close();
+
+            //判斷後者List有沒存在於前者List中
+            bool answer = false;
+            foreach (int i in courseSection_IDs)
+            {
+                foreach (int j in section_IDs)
+                {
+                    if (i == j)
+                    {
+                        answer = true;
+                    }
+                }
+            }
+
+            return answer;
+        }
         //回傳是否撞名已選課
         public bool IfNameBump(string student_ID, int course_ID)
         {
