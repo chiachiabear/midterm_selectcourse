@@ -587,13 +587,11 @@ namespace midterm_selectcourse.Models
 
             //先拿學生有的section
             SqlConnection sqlConnection = new SqlConnection(ConnStr);
-            SqlCommand sqlCommand = new SqlCommand(@"SELECT section.section_ID
-                                                    FROM ( learn 
-	                                                       INNER JOIN occurred_in
-	                                                       ON learn.course_ID = occurred_in.course_ID AND learn.condition = @condition)
-                                                    INNER JOIN section
-                                                    ON occurred_in.section_ID = section.section_ID
-                                                    WHERE learn.student_ID = '@student_id'");
+            SqlCommand sqlCommand = new SqlCommand(@"SELECT occurred_in.section_ID
+                                                    FROM learn 
+	                                                INNER JOIN occurred_in
+	                                                ON learn.course_ID = occurred_in.course_ID AND learn.condition = @condition
+                                                    WHERE learn.student_ID = @student_id");
             sqlCommand.Connection = sqlConnection;
             sqlCommand.Parameters.Add(new SqlParameter("@condition", "正在修"));
             sqlCommand.Parameters.Add(new SqlParameter("@student_id", student_ID));
@@ -622,7 +620,7 @@ namespace midterm_selectcourse.Models
             cmd.Parameters.Add(new SqlParameter("@course_id", course_ID));
             connection.Open();
 
-            SqlDataReader reader2 = sqlCommand.ExecuteReader();
+            SqlDataReader reader2 = cmd.ExecuteReader();
             if (reader2.HasRows)
             {
                 while (reader2.Read())
@@ -768,7 +766,7 @@ namespace midterm_selectcourse.Models
                                                 VALUES (@student_id, @course_id, @semester, @condition)");
             sqlCommand.Connection = sqlConnection;
 
-            sqlCommand.Parameters.Add(new SqlParameter("@student_id,", student_ID));
+            sqlCommand.Parameters.Add(new SqlParameter("@student_id", student_ID));
             sqlCommand.Parameters.Add(new SqlParameter("@course_id", course_ID));
             sqlCommand.Parameters.Add(new SqlParameter("@semester", 1112));
             sqlCommand.Parameters.Add(new SqlParameter("@condition", "正在修"));
