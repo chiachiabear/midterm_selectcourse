@@ -43,6 +43,8 @@ namespace midterm_selectcourse.Controllers
             List<CurrentCurriculum> CCs = dBmanager.GetStudentsCurriculum(param);
             ViewBag.students = students;
             ViewBag.CCs = CCs;  //還需要整理一下，讓開課班級有二合、讓同一個課程
+
+
             return View();
         }
 
@@ -120,12 +122,58 @@ namespace midterm_selectcourse.Controllers
             return View();
         }
 
-        
-
-
         public ActionResult Logout()
         {
             return RedirectToAction("Login");
+        }
+
+        public ActionResult TakeCourse(int course_ID)
+        {
+            DBmanager dBmanager = new DBmanager();
+            if(dBmanager.GetCoursePeople(course_ID) < dBmanager.GetCourseCapacity(course_ID))  //選課人數已滿
+            {
+                System.Diagnostics.Debug.WriteLine("選課人數未滿，繼續判斷");
+                //繼續判斷能不能選
+                if(!dBmanager.IfSectionBump(Session["account"].ToString(), course_ID))  //判斷是否撞已選課節次，回傳布林
+                {
+                    System.Diagnostics.Debug.WriteLine("選課沒撞節，繼續判斷");
+                    //繼續判斷能不能選
+                    if (!dBmanager.IfNameBump(Session["account"].ToString(), course_ID))  //判斷是否已有同名課，回傳布林
+                    {
+                        System.Diagnostics.Debug.WriteLine("選課沒同名，繼續判斷");
+                        //繼續判斷能不能選
+                        if (dBmanager.GetCreditsNow(Session["account"].ToString()) + dBmanager.GetCourseCredits(course_ID) <= 30)  //判斷現有學分, 欲選課學分加起來有沒有超過30，回傳布林
+                        {
+                            System.Diagnostics.Debug.WriteLine("選課加起來沒滿30，恭喜選到課");
+                            //可以選
+                            dBmanager.TakeCourseByStudentIDCourseID(Session["account"].ToString(), course_ID);
+                        }
+                        else
+                        {
+                            System.Diagnostics.Debug.WriteLine("選課加起來超過30，加選失敗");
+                            //會超過30學分不能選
+                        }
+                    }
+                    else
+                    {
+                        System.Diagnostics.Debug.WriteLine("選課撞名，加選失敗");
+                        //撞名了，不能選
+                    }
+                }
+                else 
+                {
+                    System.Diagnostics.Debug.WriteLine("選課撞節，加選失敗");
+                    //撞時間了，不能選
+                }
+            }
+            else 
+            {
+                System.Diagnostics.Debug.WriteLine("選課人數已滿，加選失敗");
+                //人滿了，不能選
+            }
+
+            //透過TempData傳暫時資料到ShowName
+            return RedirectToAction("ShowName", new { param = Session["account"] });
         }
     }
 }
