@@ -15,7 +15,7 @@ namespace midterm_selectcourse.Models
     public class DBmanager
     {
 
-        private readonly string ConnStr = @"Data Source=.\SQLEXPRESS;Initial Catalog=selectcourse;Integrated Security=True";
+        private readonly string ConnStr = @"Data Source=DESKTOP-DBTO6K8\SQLEXPRESS01;Initial Catalog=selectcourse;Integrated Security=True";
 
 
         public List<Student> GetStudents(string s)
@@ -1240,6 +1240,224 @@ namespace midterm_selectcourse.Models
             sqlConnection.Close();
             return learns;
         }
+        public List<CurrentCurriculum> GetCCsBYcourse_name(string course_name_value)
+        {
+            List<CurrentCurriculum> CCs = new List<CurrentCurriculum>();
+            SqlConnection sqlConnection = new SqlConnection(ConnStr); // 創建一個 SqlConnection 對象，使用 ConnStr 字符串指定的連接字符串進行初始化。
+            SqlCommand sqlCommand = new SqlCommand(@"select course_name,
+                                                            sort,
+                                                            course.course_ID,
+                                                            credits,
+                                                            teaches.teacher_ID,
+                                                            department_name,
+                                                            grade,
+                                                            class_name,
+                                                            teacher_name,
+                                                            account_number,
+                                                            occurred_in.building,
+                                                            classroom.room_ID,
+                                                            section.section_ID,
+                                                            weekday,
+                                                            start_time,
+                                                            end_time,
+                                                            capacity
+                                                         from course left outer join  teaches on course.course_ID=teaches.course_ID  
+					                                     left outer join set_up on course.course_ID=set_up.course_ID 
+					                                     left outer join teacher on teaches.teacher_ID=teacher.teacher_ID
+					                                     left outer join occurred_in on course.course_ID=occurred_in.course_ID
+					                                     left outer join section on section.section_ID=occurred_in.section_ID
+					                                     left outer join classroom on occurred_in.building=classroom.building  AND occurred_in.room_id = classroom.room_id
+		                                                 where course.course_name=@course_name_value
+                                                         ");
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.Parameters.Add(new SqlParameter("@course_name_value", course_name_value));
+            sqlConnection.Open();// 打開 SqlConnection 對象。
+
+            SqlDataReader reader = sqlCommand.ExecuteReader(); // 創建一個 SqlDataReader 對象，它可以讀取從數據庫返回的行。
+            if (reader.HasRows)
+            {
+                while (reader.Read())// 循環讀取 SqlDataReader 對象中的每一行，並為每個行創建一個 Card 對象。
+                {
+                    CurrentCurriculum CC = new CurrentCurriculum();
+                    CC.Course.Course_id = reader.GetInt32(reader.GetOrdinal("course_ID"));
+                    CC.Course.Course_name = reader.GetString(reader.GetOrdinal("course_name"));
+                    CC.Course.Sort = reader.GetString(reader.GetOrdinal("sort"));
+                    CC.Course.Credits = reader.GetInt32(reader.GetOrdinal("credits"));
+
+                    CC.Set_up.Department_name = reader.GetString(reader.GetOrdinal("department_name"));
+                    CC.Set_up.Grade = reader.GetInt32(reader.GetOrdinal("grade"));
+                    CC.Set_up.Class_name = reader.GetString(reader.GetOrdinal("class_name"));
+
+                    CC.Teacher_name = reader.GetString(reader.GetOrdinal("teacher_name"));
+
+                    CC.Classroom.Building = reader.GetString(reader.GetOrdinal("building"));
+                    CC.Classroom.Room_id = reader.GetString(reader.GetOrdinal("room_ID"));
+                    CC.Classroom.Capacity = reader.GetInt32(reader.GetOrdinal("capacity"));
+
+                    CC.Section.Section_id = reader.GetInt32(reader.GetOrdinal("section_ID"));
+                    CC.Section.Weekday = reader.GetString(reader.GetOrdinal("weekday"));
+                    CC.Section.Start_time = reader.GetTimeSpan(reader.GetOrdinal("start_time"));
+                    CC.Section.End_time = reader.GetTimeSpan(reader.GetOrdinal("end_time"));
+
+                    //CC.Student_amount = reader.GetInt32(reader.GetOrdinal("student_amount"));
+                    CCs.Add(CC);
+                }
+            }
+            else
+            {
+                Console.WriteLine("資料庫為空！");
+            }
+            sqlConnection.Close();
+
+            //新增一組Command跟Connection
+            SqlConnection sqlConnection2 = new SqlConnection(ConnStr);
+            SqlCommand sqlCommand2 = new SqlCommand(@"select count(student_ID) as count,L1.course_ID
+            from learn  left outer join  course L1 on learn.course_ID= L1.course_ID right outer join course L2 on L1.course_ID=L2.course_ID
+            where L1.course_name=@course_name_value
+            group by L1.course_ID;");
+            sqlCommand2.Connection = sqlConnection2;
+            sqlCommand2.Parameters.Add(new SqlParameter("@course_name_value",course_name_value));
+            sqlConnection2.Open();
+
+            SqlDataReader reader2 = sqlCommand2.ExecuteReader();
+            List<int> counts = new List<int>();
+            List<int> course_IDs = new List<int>();
+            if (reader2.HasRows)
+            {
+                while (reader2.Read())
+                {
+                    int count = new int();
+                    int cID = new int();
+                    count = reader2.GetInt32(reader2.GetOrdinal("count"));
+                    cID = reader2.GetInt32(reader2.GetOrdinal("course_ID"));
+
+                    counts.Add(count);
+                    course_IDs.Add(cID);
+                }
+            }
+            sqlConnection2.Close();
+            for (int i = 0; i < CCs.Count; i++)
+            {
+                for (int j = 0; j < course_IDs.Count; j++)
+                {
+                    if (CCs[i].Course.Course_id == course_IDs[j])
+                    {
+                        CCs[i].Student_amount = counts[j];
+                    }
+                }
+            }
+
+            return CCs;
+        }
+
+        public List<CurrentCurriculum> GetCCsBYteacher_name(string teacher_name_value)
+        {
+            List<CurrentCurriculum> CCs = new List<CurrentCurriculum>();
+            SqlConnection sqlConnection = new SqlConnection(ConnStr); // 創建一個 SqlConnection 對象，使用 ConnStr 字符串指定的連接字符串進行初始化。
+            SqlCommand sqlCommand = new SqlCommand(@"select course_name,sort,course.course_ID,credits,teaches.teacher_ID,department_name,grade,class_name,teacher_name,account_number,occurred_in.building,classroom.room_ID,section.section_ID,weekday,start_time,end_time,capacity
+                                                 from course left outer join  teaches on course.course_ID=teaches.course_ID  
+					                             left outer join set_up on course.course_ID=set_up.course_ID 
+					                             left outer join teacher on teaches.teacher_ID=teacher.teacher_ID
+					                             left outer join occurred_in on course.course_ID=occurred_in.course_ID
+					                             left outer join section on occurred_in.section_ID  =section.section_ID
+					                             left outer join classroom on occurred_in.building=classroom.building AND occurred_in.room_id = classroom.room_id
+                                                 where teacher.teacher_name=@teacher_name_value
+                                                 ");
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.Parameters.Add(new SqlParameter("@teacher_name_value", teacher_name_value));
+            sqlConnection.Open();// 打開 SqlConnection 對象。
+
+            SqlDataReader reader = sqlCommand.ExecuteReader(); // 創建一個 SqlDataReader 對象，它可以讀取從數據庫返回的行。
+            if (reader.HasRows)
+            {
+                while (reader.Read())// 循環讀取 SqlDataReader 對象中的每一行，並為每個行創建一個 Card 對象。
+                {
+                    CurrentCurriculum CC = new CurrentCurriculum();
+                    CC.Course.Course_id = reader.GetInt32(reader.GetOrdinal("course_ID"));
+                    CC.Course.Course_name = reader.GetString(reader.GetOrdinal("course_name"));
+                    CC.Course.Sort = reader.GetString(reader.GetOrdinal("sort"));
+                    CC.Course.Credits = reader.GetInt32(reader.GetOrdinal("credits"));
+
+                    CC.Set_up.Department_name = reader.GetString(reader.GetOrdinal("department_name"));
+                    CC.Set_up.Grade = reader.GetInt32(reader.GetOrdinal("grade"));
+                    CC.Set_up.Class_name = reader.GetString(reader.GetOrdinal("class_name"));
+
+                    CC.Teacher_name = reader.GetString(reader.GetOrdinal("teacher_name"));
+
+                    CC.Classroom.Building = reader.GetString(reader.GetOrdinal("building"));
+                    CC.Classroom.Room_id = reader.GetString(reader.GetOrdinal("room_ID"));
+                    CC.Classroom.Capacity = reader.GetInt32(reader.GetOrdinal("capacity"));
+
+                    CC.Section.Section_id = reader.GetInt32(reader.GetOrdinal("section_ID"));
+                    CC.Section.Weekday = reader.GetString(reader.GetOrdinal("weekday"));
+                    CC.Section.Start_time = reader.GetTimeSpan(reader.GetOrdinal("start_time"));
+                    CC.Section.End_time = reader.GetTimeSpan(reader.GetOrdinal("end_time"));
+
+                    //CC.Student_amount = reader.GetInt32(reader.GetOrdinal("student_amount"));
+                    CCs.Add(CC);
+                }
+            }
+            else
+            {
+                Console.WriteLine("資料庫為空！");
+            }
+            sqlConnection.Close();
+
+            //新增一組Command跟Connection
+            SqlConnection sqlConnection2 = new SqlConnection(ConnStr);
+            SqlCommand sqlCommand2 = new SqlCommand(@"select count(student_ID) as count,L1.course_ID
+            from learn  
+            left outer join  course L1 on learn.course_ID= L1.course_ID 
+			left outer join teaches on L1.course_ID=teaches.course_ID 
+			left outer join teacher on teaches.teacher_ID=teacher.teacher_ID 
+			where teacher_name='@teacher_name_value' AND learn.condition='正在修'
+			group by L1.course_ID;  
+             ");
+            sqlCommand2.Connection = sqlConnection2;
+            sqlCommand2.Parameters.Add(new SqlParameter("@teacher_name_value", teacher_name_value));
+            sqlConnection2.Open();
+
+            SqlDataReader reader2 = sqlCommand2.ExecuteReader();
+            List<int> counts = new List<int>();
+            List<int> course_IDs = new List<int>();
+            if (reader2.HasRows)
+            {
+                while (reader2.Read())
+                {
+                    int count = new int();
+                    int cID = new int();
+                    count = reader2.GetInt32(reader2.GetOrdinal("count"));
+                    cID = reader2.GetInt32(reader2.GetOrdinal("course_ID"));
+
+                    counts.Add(count);
+                    course_IDs.Add(cID);
+                }
+            }
+            sqlConnection2.Close();
+            for (int i = 0; i < CCs.Count; i++)
+            {
+                for (int j = 0; j < course_IDs.Count; j++)
+                {
+                    if (CCs[i].Course.Course_id == course_IDs[j])
+                    {
+                        CCs[i].Student_amount = counts[j];
+                    }
+                }
+            }
+
+            return CCs;
+        }
+
+
+
+        public List<CurrentCurriculum> GetCCsBYdefault()
+
+        {
+            List<CurrentCurriculum> CCs = new List<CurrentCurriculum>();
+            return CCs;
+        }
+
+        
 
         //public List<Course> GetCourse(List<Learns> learns)
         //{

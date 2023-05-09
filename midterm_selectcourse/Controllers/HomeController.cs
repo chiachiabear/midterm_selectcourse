@@ -110,14 +110,25 @@ namespace midterm_selectcourse.Controllers
                 case 3:
                     //用course_name_value搜尋
                     System.Diagnostics.Debug.WriteLine(course_name_value);
+                     CCs = dBmanager.GetCCsBYcourse_name(course_name_value);
+                     students = dBmanager.GetStudents(Session["account"].ToString());
+                    ViewBag.CCs = CCs;
+                    ViewBag.students = students;        
                     break;
                 case 4:
                     //用teacher_name_value搜尋
                     System.Diagnostics.Debug.WriteLine(teacher_name_value);
+                    CCs = dBmanager.GetCCsBYteacher_name(teacher_name_value);
+                    students = dBmanager.GetStudents(Session["account"].ToString());
+                    ViewBag.CCs = CCs;
+                    ViewBag.students = students;
                     break;
                 default:
                     //顯示他可以選的課表, 比他高年的年級的必修不能選, 未滿足先修課程的課不能修
-
+                    CCs = dBmanager.GetCCsBYdefault();
+                    students = dBmanager.GetStudents(Session["account"].ToString());
+                    ViewBag.CCs = CCs;
+                    ViewBag.students = students;
                     break;
             }
 
