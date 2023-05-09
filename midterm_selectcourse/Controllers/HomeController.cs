@@ -41,10 +41,10 @@ namespace midterm_selectcourse.Controllers
             DBmanager dBmanager = new DBmanager();
             List<Student> students = dBmanager.GetStudents(param);
             List<CurrentCurriculum> CCs = dBmanager.GetStudentsCurriculum(param);
+            List<Occurred_in> NowOIs = dBmanager.GetlernaOccurredIn(param);
             ViewBag.students = students;
             ViewBag.CCs = CCs;  //還需要整理一下，讓開課班級有二合、讓同一個課程
-
-
+            ViewBag.NowOIs = NowOIs;
             return View();
         }
 
@@ -62,6 +62,7 @@ namespace midterm_selectcourse.Controllers
             selectDict.Add("teacher_name", 4);
             List<CurrentCurriculum> CCs;
             List<Student> students;
+            List<Occurred_in> NowOIs;
             switch (selectDict[select_option])
             {
                 case 0:
@@ -69,8 +70,10 @@ namespace midterm_selectcourse.Controllers
                     System.Diagnostics.Debug.WriteLine(course_code_value);
                     CCs = dBmanager.GetCCsBYCourseID(course_code_value);
                     students = dBmanager.GetStudents( Session["account"].ToString());
+                    NowOIs = dBmanager.GetlernaOccurredIn(Session["account"].ToString());
                     ViewBag.students = students;
                     ViewBag.CCs = CCs;
+                    ViewBag.NowOIs = NowOIs;
                     break;
                 case 1:
                     //用department, grade搜尋
