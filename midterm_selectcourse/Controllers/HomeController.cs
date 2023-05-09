@@ -41,10 +41,10 @@ namespace midterm_selectcourse.Controllers
             DBmanager dBmanager = new DBmanager();
             List<Student> students = dBmanager.GetStudents(param);
             List<CurrentCurriculum> CCs = dBmanager.GetStudentsCurriculum(param);
+            List<Occurred_in> NowOIs = dBmanager.GetlernaOccurredIn(param);
             ViewBag.students = students;
             ViewBag.CCs = CCs;  //還需要整理一下，讓開課班級有二合、讓同一個課程
-
-
+            ViewBag.NowOIs = NowOIs;
             return View();
         }
 
@@ -62,6 +62,9 @@ namespace midterm_selectcourse.Controllers
             selectDict.Add("teacher_name", 4);
             List<CurrentCurriculum> CCs;
             List<Student> students;
+            List<Occurred_in> NowOIs;
+            NowOIs = dBmanager.GetlernaOccurredIn(Session["account"].ToString());
+            ViewBag.NowOIs = NowOIs;
             switch (selectDict[select_option])
             {
                 case 0:
@@ -69,8 +72,10 @@ namespace midterm_selectcourse.Controllers
                     System.Diagnostics.Debug.WriteLine(course_code_value);
                     CCs = dBmanager.GetCCsBYCourseID(course_code_value);
                     students = dBmanager.GetStudents( Session["account"].ToString());
+                    
                     ViewBag.students = students;
                     ViewBag.CCs = CCs;
+                    
                     break;
                 case 1:
                     //用department, grade搜尋
@@ -107,16 +112,28 @@ namespace midterm_selectcourse.Controllers
                 case 3:
                     //用course_name_value搜尋
                     System.Diagnostics.Debug.WriteLine(course_name_value);
+                     CCs = dBmanager.GetCCsBYcourse_name(course_name_value);
+                     students = dBmanager.GetStudents(Session["account"].ToString());
+                    ViewBag.CCs = CCs;
+                    ViewBag.students = students;        
                     break;
                 case 4:
                     //用teacher_name_value搜尋
                     System.Diagnostics.Debug.WriteLine(teacher_name_value);
+                    CCs = dBmanager.GetCCsBYteacher_name(teacher_name_value);
+                    students = dBmanager.GetStudents(Session["account"].ToString());
+                    ViewBag.CCs = CCs;
+                    ViewBag.students = students;
                     break;
                 default:
                     //顯示他可以選的課表, 比他高年的年級的必修不能選, 未滿足先修課程的課不能修
-
+                    CCs = dBmanager.GetCCsBYdefault();
+                    students = dBmanager.GetStudents(Session["account"].ToString());
+                    ViewBag.CCs = CCs;
+                    ViewBag.students = students;
                     break;
             }
+
 
             
             return View();

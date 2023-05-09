@@ -3,6 +3,7 @@
 @{
     List<Student> students = ViewBag.students;
     List<CurrentCurriculum> CCs = ViewBag.CCs;
+    List<Occurred_in> NowOIs = ViewBag.NowOIs;
 }
 <link href="~/Content/showname.css" rel="stylesheet" type="text/css" />
 <!--顯示學生資訊-->
@@ -22,8 +23,10 @@
     </thead>
     <tbody>
 
-        @foreach (Student student in students)
-        {
+        @*@foreach (Student student in students)
+
+
+     {
             <tr>
                 <td>@student.Student_id</td>
                 <td>@student.Department_name</td>
@@ -34,10 +37,10 @@
                 <td>@student.Student_grade</td>
                 <td>@student.Total_credits</td>
             </tr>
-        }
+        }*@
 
     </tbody>
-</table>
+    </table>
 
 
 
@@ -225,128 +228,128 @@
         <!--課表--><!--用Razor對比<td id>跟CC.Section.Section_ID, 找出放入的course_ID-->
         <table class="right-table">
 
-            <tr>
-                <th></th> <!--星期/節次-->
-                <th>星期一</th>
-                <th>星期二</th>
-                <th>星期三</th>
-                <th>星期四</th>
-                <th>星期五</th>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td id="101">1259</td>
-                <td id="201">1259</td>
-                <td id="301">1259</td>
-                <td id="401">1259</td>
-                <td id="501">1259</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td id="102">1259</td>
-                <td id="202">1259</td>
-                <td id="302">1259</td>
-                <td id="402">1259</td>
-                <td id="502">1259</td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td id="103">1259</td>
-                <td id="203">1259</td>
-                <td id="303">1259</td>
-                <td id="403">1259</td>
-                <td id="503">1259</td>
-            </tr>
-            <tr>
-                <td>4</td>
-                <td id="104">1259</td>
-                <td id="204">1259</td>
-                <td id="304">1259</td>
-                <td id="404">1259</td>
-                <td id="504">1259</td>
-            </tr>
-            <tr>
-                <td>5</td>
-                <td id="105">1259</td>
-                <td id="205">1259</td>
-                <td id="305">1259</td>
-                <td id="405">1259</td>
-                <td id="505">1259</td>
-            </tr>
-            <tr>
-                <td>6</td>
-                <td id="106">1259</td>
-                <td id="206">1259</td>
-                <td id="306">1259</td>
-                <td id="406">1259</td>
-                <td id="506">1259</td>
-            </tr>
-            <tr>
-                <td>7</td>
-                <td id="107">1259</td>
-                <td id="207">1259</td>
-                <td id="307">1259</td>
-                <td id="407">1259</td>
-                <td id="507">1259</td>
-            </tr>
-            <tr>
-                <td>8</td>
-                <td id="108">1259</td>
-                <td id="208">1259</td>
-                <td id="308">1259</td>
-                <td id="408">1259</td>
-                <td id="508">1259</td>
-            </tr>
-            <tr>
-                <td>9</td>
-                <td id="109">1259</td>
-                <td id="209">1259</td>
-                <td id="309">1259</td>
-                <td id="409">1259</td>
-                <td id="509">1259</td>
-            </tr>
-            <tr>
-                <td>10</td>
-                <td id="110">1259</td>
-                <td id="210">1259</td>
-                <td id="310">1259</td>
-                <td id="410">1259</td>
-                <td id="510">1259</td>
-            </tr>
-            <tr>
-                <td>11</td>
-                <td id="111">1259</td>
-                <td id="211">1259</td>
-                <td id="311">1259</td>
-                <td id="411">1259</td>
-                <td id="511">1259</td>
-            </tr>
-            <tr>
-                <td>12</td>
-                <td id="112">1259</td>
-                <td id="212">1259</td>
-                <td id="312">1259</td>
-                <td id="412">1259</td>
-                <td id="512">1259</td>
-            </tr>
-            <tr>
-                <td>13</td>
-                <td id="113">1259</td>
-                <td id="213">1259</td>
-                <td id="313">1259</td>
-                <td id="413">1259</td>
-                <td id="513">1259</td>
-            </tr>
-            <tr>
-                <td>14</td>
-                <td id="114">1259</td>
-                <td id="214">1259</td>
-                <td id="314">1259</td>
-                <td id="414">1259</td>
-                <td id="514">1259</td>
-            </tr>
-        </table>
-    </div>
+                    <tr>
+                        <th></th> <!--星期/節次-->
+                        <th>星期一</th>
+                        <th>星期二</th>
+                        <th>星期三</th>
+                        <th>星期四</th>
+                        <th>星期五</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td id="101">@NowOIs[0].Course_id</td>
+                        <td id="201">@NowOIs[1].Course_id</td>
+                        <td id="301">@NowOIs[2].Course_id</td>
+                        <td id="401">@NowOIs[3].Course_id</td>
+                        <td id="501">@NowOIs[4].Course_id</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td id="102">@NowOIs[5].Course_id</td>
+                        <td id="202">@NowOIs[6].Course_id</td>
+                        <td id="302">@NowOIs[7].Course_id</td>
+                        <td id="402">@NowOIs[8].Course_id</td>
+                        <td id="502">@NowOIs[9].Course_id</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td id="103">@NowOIs[10].Course_id</td>
+                        <td id="203">@NowOIs[11].Course_id</td>
+                        <td id="303">@NowOIs[12].Course_id</td>
+                        <td id="403">@NowOIs[13].Course_id</td>
+                        <td id="503">@NowOIs[14].Course_id</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td id="104">@NowOIs[15].Course_id</td>
+                        <td id="204">@NowOIs[16].Course_id</td>
+                        <td id="304">@NowOIs[17].Course_id</td>
+                        <td id="404">@NowOIs[18].Course_id</td>
+                        <td id="504">@NowOIs[19].Course_id</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td id="105">@NowOIs[20].Course_id</td>
+                        <td id="205">@NowOIs[21].Course_id</td>
+                        <td id="305">@NowOIs[22].Course_id</td>
+                        <td id="405">@NowOIs[23].Course_id</td>
+                        <td id="505">@NowOIs[24].Course_id</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td id="106">@NowOIs[25].Course_id</td>
+                        <td id="206">@NowOIs[26].Course_id</td>
+                        <td id="306">@NowOIs[27].Course_id</td>
+                        <td id="406">@NowOIs[28].Course_id</td>
+                        <td id="506">@NowOIs[29].Course_id</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td id="107">@NowOIs[30].Course_id</td>
+                        <td id="207">@NowOIs[31].Course_id</td>
+                        <td id="307">@NowOIs[32].Course_id</td>
+                        <td id="407">@NowOIs[33].Course_id</td>
+                        <td id="507">@NowOIs[34].Course_id</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td id="108">@NowOIs[35].Course_id</td>
+                        <td id="208">@NowOIs[36].Course_id</td>
+                        <td id="308">@NowOIs[37].Course_id</td>
+                        <td id="408">@NowOIs[38].Course_id</td>
+                        <td id="508">@NowOIs[39].Course_id</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td id="109">@NowOIs[40].Course_id</td>
+                        <td id="209">@NowOIs[41].Course_id</td>
+                        <td id="309">@NowOIs[42].Course_id</td>
+                        <td id="409">@NowOIs[43].Course_id</td>
+                        <td id="509">@NowOIs[44].Course_id</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td id="110">@NowOIs[45].Course_id</td>
+                        <td id="210">@NowOIs[46].Course_id</td>
+                        <td id="310">@NowOIs[47].Course_id</td>
+                        <td id="410">@NowOIs[48].Course_id</td>
+                        <td id="510">@NowOIs[49].Course_id</td>
+                    </tr>
+                    <tr>
+                        <td>11</td>
+                        <td id="111">@NowOIs[50].Course_id</td>
+                        <td id="211">@NowOIs[51].Course_id</td>
+                        <td id="311">@NowOIs[52].Course_id</td>
+                        <td id="411">@NowOIs[53].Course_id</td>
+                        <td id="511">@NowOIs[54].Course_id</td>
+                    </tr>
+                    <tr>
+                        <td>12</td>
+                        <td id="112">@NowOIs[55].Course_id</td>
+                        <td id="212">@NowOIs[56].Course_id</td>
+                        <td id="312">@NowOIs[57].Course_id</td>
+                        <td id="412">@NowOIs[58].Course_id</td>
+                        <td id="512">@NowOIs[59].Course_id</td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td id="113">@NowOIs[60].Course_id</td>
+                        <td id="213">@NowOIs[61].Course_id</td>
+                        <td id="313">@NowOIs[62].Course_id</td>
+                        <td id="413">@NowOIs[63].Course_id</td>
+                        <td id="513">@NowOIs[64].Course_id</td>
+                    </tr>
+                    <tr>
+                        <td>14</td>
+                        <td id="114">@NowOIs[65].Course_id</td>
+                        <td id="214">@NowOIs[66].Course_id</td>
+                        <td id="314">@NowOIs[67].Course_id</td>
+                        <td id="414">@NowOIs[68].Course_id</td>
+                        <td id="514">@NowOIs[69].Course_id</td>
+                    </tr>
+                </table>
+            </div>
 
 </body>
 
