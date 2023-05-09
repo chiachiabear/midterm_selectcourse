@@ -63,6 +63,8 @@ namespace midterm_selectcourse.Controllers
             List<CurrentCurriculum> CCs;
             List<Student> students;
             List<Occurred_in> NowOIs;
+            NowOIs = dBmanager.GetlernaOccurredIn(Session["account"].ToString());
+            ViewBag.NowOIs = NowOIs;
             switch (selectDict[select_option])
             {
                 case 0:
@@ -70,10 +72,10 @@ namespace midterm_selectcourse.Controllers
                     System.Diagnostics.Debug.WriteLine(course_code_value);
                     CCs = dBmanager.GetCCsBYCourseID(course_code_value);
                     students = dBmanager.GetStudents( Session["account"].ToString());
-                    NowOIs = dBmanager.GetlernaOccurredIn(Session["account"].ToString());
+                    
                     ViewBag.students = students;
                     ViewBag.CCs = CCs;
-                    ViewBag.NowOIs = NowOIs;
+                    
                     break;
                 case 1:
                     //用department, grade搜尋
@@ -131,6 +133,7 @@ namespace midterm_selectcourse.Controllers
                     ViewBag.students = students;
                     break;
             }
+
 
             
             return View();

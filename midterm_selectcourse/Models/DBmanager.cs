@@ -15,7 +15,7 @@ namespace midterm_selectcourse.Models
     public class DBmanager
     {
 
-        private readonly string ConnStr = @"Data Source=DESKTOP-DBTO6K8\SQLEXPRESS01;Initial Catalog=selectcourse;Integrated Security=True";
+        private readonly string ConnStr = @"Data Source=.\SQLEXPRESS;Initial Catalog=selectcourse;Integrated Security=True";
 
 
         public List<Student> GetStudents(string s)
