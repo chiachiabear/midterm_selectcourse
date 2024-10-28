@@ -1,5 +1,5 @@
 <h1>資料庫期中-選課系統</h1>
-使用ASP.Net開發的Web，資料庫使用SQL Server
+使用ASP.Net開發的Web，資料庫使用SQL Server，專案以MVC架構開發
 
 功能：
 <ol>
