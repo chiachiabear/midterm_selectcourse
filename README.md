@@ -25,13 +25,13 @@
 
 以下為部分截圖，其他功能截圖於/screenShots內
 
-![登入](/screenShots/login.png "登入頁面")
+![登入](/screenShots/new/login.jpg "登入頁面")
 
-![主頁面](/screenShots/mainPage.png "主頁面")
+![主頁面](/screenShots/new/mainPage.jpg "主頁面")
 
-![快捷顯示課表](/screenShots/schedule.png "快捷顯示課表")
+![快捷顯示課表](/screenShots/new/schedule.jpg "快捷顯示課表")
 
-![以時段搜尋課程](/screenShots/weekSearch.png "以時段搜尋課程")
+![以課程名稱搜尋課程](/screenShots/new/courseNameSearch.jpg "以課程名稱搜尋課程")
 
 
 
